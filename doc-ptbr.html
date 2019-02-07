@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-	<title>BananaPKG - Simples Gerenciador de pacotes</title>
+	<title>BananaPKG - Simples Gerenciador de pacotes de baixo nível</title>
 	<meta charset="utf-8">
 	<style>
 		body{font-size: 1.2em; color: #232323;font-family: courier new; margin: 8%;}
@@ -24,7 +24,7 @@
 	</style>
 </head>
 <body>
-<b>Atualização: 05/02/2019</b>
+<b>Atualização: 07/02/2019</b>
 <h2>Documentação</h2>
 <h3>Índice</h3>
 <ol id="principal">
@@ -46,16 +46,17 @@
 		     <li><a href="#instalar-atualizar-pacote">Como instalar/atualizar um pacote</a></li>
 		     <li><a href="#remover-pacote">Como remover um pacote</a></li>			
 		</ul>
+	<li id="categoria" href='#'>Desenvolvimento</li>
+                <ul>
+		     <li><a href="#listdescremove">/var/lib/banana/{list,desc,remove}</a></li>
+		     <li><a href="#etcbanana">Arquivo de configuração em /etc/banana</a></li>
+		     <li><a href="#coresh">core.sh</a></li>
+                </ul>
 	<li id="categoria" href='#compilacao'>Compilação um caminho correto</li>
                 <ul>
 		     <li><a href="#compilacao">Quais parâmetros devo usar na compilação?</a></li>
 		     <li><a href="#enfeites">Enfeites do pacote</a></li>
 		     <li><a href="#strip">Strip Now</a></li>
-                </ul>
-	<li id="categoria" href='#'>Desenvolvimento</li>
-                <ul>
-		     <li><a href="#listdescremove">/var/lib/banana/{list,desc,remove}</a></li>
-		     <li><a href="#etcbanana">Arquivo de configuração em /etc/banana</a></li>
                 </ul>
 </ol>
 
@@ -68,10 +69,7 @@ O PROJETO
 -->
 
 <h3 id="bananapkgprojeto" class="titulo">O projeto BananaPKG</h3>
-O bananaPKG é o projeto que tem suas ferramentas independentes, cada ferramenta faz alguma manutenção no pacote, sendo estes utilitários: <br><br>
-<li><b>createpkg</b> Cria um pacote na extensão .mz</li>
-<li><b>burnpkg</b> Remove um ou mais pacotes</li>
-<li><b>plantpkg</b> Instala e Atualiza um ou mais pacotes</li>
+O bananaPKG foi iniciado com suas ferramentas de baixo nível indenpendentes. Porém na versão 1.5, passou a ser uma ferramenta única que tem suas chamadas (create, install, upgrade, remove, search)</b><br><br>
 <br>
 Você pode conferir a sintaxe no indice: <a href="#modo-de-utilizacao">Modo de utilização</a>
 
@@ -85,7 +83,7 @@ O BananaPKG foi criado na linguagem de programação Shell Bash. Feito para ser 
 
 
 <h3 id="bananapkg-alto-nivel" class="titulo">BananaPKG é de alto nível?</h3>
-Não! BananaPKG é uma ferramenta de baixo nível, com ela você pode <b>Criar</b>, <b>Instalar</b>, <b>Atualizar</b> e <b>Remover</b> pacotes do seu sistema.<br>
+Não! BananaPKG é uma ferramenta de baixo nível, com ela você pode <b>Criar</b>, <b>Instalar</b>, <b>Atualizar</b>, <b>Remover</b> e <b>procurar</b> pacotes do seu sistema.<br>
 Ou seja, ela serve para gerenciar os pacotes e cuida-los. Se caso você seja um bom programador de Shell e queira fazer uma extensão de alto nível que resolva dependências, há uma array/lista no arquivo info/desc que contém as dependências do pacote.
 Essa array foi criada e pensada para um uso futuro para quem deseja fazer uma extensão. Por padrão o projeto não terá oficialmente uma extensão para esta finalidade.
 
@@ -100,6 +98,7 @@ Com toda certeza. Mas para quem ser o receptor do pacote vai precisar utilizar o
 <hr>
 
 
+
 <!--
 #####################################
 MODO DE UTILIZAÇÃO
@@ -107,19 +106,14 @@ MODO DE UTILIZAÇÃO
 -->
 
 
+
 <h2 id="modo-de-utilizacao">Modo de utilização</h2>
 
 <h3 id="criar-pacote" class="titulo">Como criar um pacote</h3>
-<b>createpkg [opções] [nome_do_pacote-versão-build.mz]</b><br>
-
-<p>Opções disponíveis do <b>createpkg</b></p>
+<b>banana [create] [nome_do_pacote-versão-build.mz]</b><br><br>
 
 <div id="code">
-<b>-n</b>, <b>name</b> <b id="parametros">NomeDoPacote-Versão-Build.mz</b><br>
-<br>
-<b>-g</b>, <b>generate</b> <b id="parametros">Gera o arquivo desc não preenchido.</b><br>
-<br>
-<b>-h</b>, <b>--help</b> <b id="parametros">Exibe ajuda e sai</b><br>
+<b>-c</b>, <b>create</b> <b id="parametros">Criação de pacote(s)</b><br>
 </div>
 
 <p>Após a você ter feito o fakeroot do pacote, você irá necessitar seguir um passo a passo para ter êxito. O primeiro passo é criar um diretório chamado <b>info/</b> e um arquivo dentro do diretório chamado <b>desc</b>. Esse arquivo <b>desc</b> é de muita importância para o pacote. É atráves dele que toda conferência do pacote é feita nos outros utilitários.<br>
@@ -254,28 +248,25 @@ EOF
 </div>
 
 <h3 id="instalar-atualizar-pacote" class="titulo">Como instalar/atualizar um pacote</h3>
-<b>plantpkg [opções] [Nomedopacote-Versão-Build.mz]</b><br>
-
-<p>Opções disponíveis do <b>createpkg</b></p>
+<b>banana [opções] [Nomedopacote-Versão-Build.mz]</b><br><br>
 
 <div id="code">
 <b>-i</b>, <b>install</b> <b id="parametros">Instalação de pacote(s)</b><br>
 <br>
 <b>-u</b>, <b>upgrade</b> <b id="parametros">Upgrade do(s) pacote(s)</b><br>
 <br>
-<b>-h</b>, <b>--help</b> <b id="parametros">Exibe ajuda e sai</b><br>
 </div>
 
-<p>plantpkg faz a instalação e atualização dos pacotes! A instalação é burra, ou seja ela não verifica versões, já se você usar a opção para atualizar o pacote ele faz a checkagem do nome, versão e build do pacote, se a versão for uma versão superior ele remove toda a hierarquia da versão anterior e instala a nova versão, isso é válido também para o build, se caso o build for maior ele faz o mesmo processo. Por isto o build é tão importante também!<br>
+<p>o parâmetro -i faz a instalação e atualização dos pacotes! A instalação é burra, ou seja ela não verifica versões, já se você usar a opção para atualizar o pacote ele faz a checkagem do nome, versão e build do pacote, se a versão for uma versão superior ele remove toda a hierarquia da versão anterior e instala a nova versão, isso é válido também para o build, se caso o build for maior ele faz o mesmo processo. Por isto o build é tão importante também!<br>
 Se caso a Versão ou Build que você deseja "atualizar" for uma versão inferior ele não faz nada. Supondo que queira atualizar a versão do leafpad da 1.0 para versão 2.0:</p>
 
 <div id="code">
-# plantpkg upgrade leafpad-2.0-1.mz<br>
+# banana upgrade leafpad-2.0-1.mz<br>
 <br>
 Ou se caso você tem um leafpad com o build maior que tem no sistema!
 <br>
 <br>
-# plantpkg upgrade leafpad-2.0-2.mz
+# banana -u leafpad-2.0-2.mz
 <br>
 </div>
 
@@ -289,14 +280,10 @@ Nota!<br>
 </div>
 
 <h3 id="remover-pacote" class="titulo">Como remover um pacote</h3>
-<b>burnpkg [opções] [nome_do_pacote] ou [nome_do_pacote-versão]</b><br>
-
-<p>Opções disponíveis do <b>createpkg</b></p>
+<b>banana [opções] [nome_do_pacote] ou [nome_do_pacote-versão]</b><br><br>
 
 <div id="code">
-<b>-b</b>, <b>burn</b> <b id="parametros">Remove pacote(s)</b><br>
-<br>
-<b>-h</b>, <b>--help</b> <b id="parametros">Exibe ajuda e sai</b><br>
+<b>-r</b>, <b>remove</b> <b id="parametros">Remove pacote(s)</b><br>
 </div>
 
 <p>A ferramenta burnpkg serve para uma única finalidade, remover toda hierarquia do pacote no sistema. Sua sintaxe é bem simples é fácil. Supondo que queira remover o pacote leafpad do meu sistema, como root você necessita passar o parâmetro -b ou burn</p>
@@ -312,7 +299,7 @@ Nota!<br>
 Exemplo clássico, supondo que tenho o leafpad com 2 versões diferentes no sistema a versão 1.0 e 2.0:</p>
 
 <div id="code">
-# burnpkg burn leafpad<br>
+# banana remove leafpad<br>
 [FOUND] leafpad-1.0<br>
 [FOUND] leafpad-2.0<br>
 </div>
@@ -320,18 +307,18 @@ Exemplo clássico, supondo que tenho o leafpad com 2 versões diferentes no sist
 <p>Então para fazer remoção neste caso eu precisarei passar o <b>nome</b> do pacote traço <b>versão</b>, ficando <b>nomepacote-versão</b>. Vamos supor que queira remover a versão do leafpad 2.0:</p>
 
 <div id="code">
-# burnpkg burn leafpad-2.0<br>
+# banana remove leafpad-2.0<br>
 </div>
 
 <p><b class="sub">O parâmetro -y</b><br><br>
 Para auto-confirmar sua escolha e não precisar passar o (y|Y|ENTER) para confirmar a remoção você pode passar o parâmetro -y, não importando sua posição, exemplo:</p>
 
 <div id="code">
-# <b>burnpkg burn -y</b> leafpad<br>
+# <b>banana remove -y</b> leafpad<br>
 <br>
 A posição do parâmetro -y pode ser em qualquer lugar!<br>
 <br>
-# <b>burnpkg burn</b> leafpad <b>-y</b><br>
+# <b>banana remove</b> leafpad <b>-y</b><br>
 </div>
 
 <div id="nota">
@@ -407,6 +394,48 @@ Nota!
     <li>Hierarquia de binários, bibliotecas, e arquivos de desenvolvimentos JAMAIS devem ficar em /usr/local, isto suja o sistema. Pois o programa pode tentar puxar por exemplo a biblioteca de /usr/lib e ela está em /usr/local/lib.</li>
 </ul>
 </div>
+
+
+<hr>
+
+
+<!--
+########################
+ DESENVOLVIMENTO
+########################
+-->
+
+<h2>Desenvolvimento</h2>
+
+<h3 id="listdescremove" class="titulo">/var/lib/banana/{list,desc,remove}</h3>
+Na criação dos pacotes é gerado 3 diretórios que são <b>essenciais</b> para o funcionamento das ferramentos e funciona como um banco de dados. Estes diretórios ficam em /var/lib/banana/ e tem 3 variações, neste tópico você vai saber o que estes diretórios contém e por que é tão essencial.
+
+<p><b class="sub">/var/lib/banana/list</b><br>
+Este diretório é o banco de dados para as listas de instalação dos pacotes. Quando um pacote é "extraido" na / ele fica descontrolado, por isso na criação do pacote é criado uma lista para o usuário ter o controle de tudo que o pacote X instalou no sistema. Esta lista é usado especialmente pela ferramenta de remoção <b>burnpkg</b> e nada além disso. Na hora da remoção de um determinado software o burnpkg consulta este diretório!
+
+<p><b class="sub">/var/lib/banana/desc</b><br>
+Este diretório é o banco de dados para a descrição dos pacote que o empacotador cria no fakeroot no diretório info/desc. Na hora da extração com o <b>plantpkg</b> esse arquivo <b>desc</b> é movido para /var/log/desc com o nome do programa-versao-build.desc!
+Este diretório é especial pois contém todo o formulário e identidade do(s) pacote(s) e suas especificações como (mantenedor, programa, versão, build, descrição, dependencias) entre outras informações.
+
+<p><b class="sub">/var/lib/banana/remove</b><br>
+Este diretório é usado diretamente pelo <b>burnpkg</b>, ele armazena scripts de instruções extras para remoção que o empacotador inseriu. Quando o burnpkg é invocado e se tudo ocorreu certo, antes de começar realmente a remoção ele chama o Script de remoção deste diretório, e depois consulta o /var/log/list para começar a remoção realmente. 
+
+<h3 id="etcbanana" class="titulo">Arquivo de configuração em /etc/banana</h3>
+Arquivos de configurações estão localizados em /etc/banana, é neste ditório que você pode encontrar o arquivo de configuração banana.conf e mudança de execução dos programas.
+
+<h3 id="coresh" class="titulo">core.sh</h3>
+<p>É a biblioteca de funções aonde todo o funcionamento principal das ferramentas estão! Até a versão 1.5 estas ferramentas eram a parte e se chamavam: burnpkg para remover pacotes, createpkg para criar pacotes e plantpkg para instalar pacotes.<br>
+No trabalho que foi feito na nova versão todo programa foi reformulado e exportado tudo para estão biblioteca que fica localizada em /usr/libexec/banana/.</p>
+
+
+<hr>
+
+<!--
+########################
+ ENFEITES
+########################
+-->
+
 
 
 <h3 id="enfeites" class="titulo">Enfeites do pacote</h3>
@@ -513,24 +542,6 @@ usr/bin/nano: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically l
 
 <p>O binário de 168M reduziu para 5,5M! Será que faz diferença? é essencial usar o strip em binários, <b>JAMAIS</b> se esqueça pois isso faz toda diferença no tamanho do pacote.</p>
 
-
-<hr>
-
-<h3 id="listdescremove" class="titulo">/var/lib/banana/{list,desc,remove}</h3>
-Na criação dos pacotes é gerado 3 diretórios que são <b>essenciais</b> para o funcionamento das ferramentos e funciona como um banco de dados. Estes diretórios ficam em /var/lib/banana/ e tem 3 variações, neste tópico você vai saber o que estes diretórios contém e por que é tão essencial.
-
-<p><b class="sub">/var/lib/banana/list</b><br>
-Este diretório é o banco de dados para as listas de instalação dos pacotes. Quando um pacote é "extraido" na / ele fica descontrolado, por isso na criação do pacote é criado uma lista para o usuário ter o controle de tudo que o pacote X instalou no sistema. Esta lista é usado especialmente pela ferramenta de remoção <b>burnpkg</b> e nada além disso. Na hora da remoção de um determinado software o burnpkg consulta este diretório!
-
-<p><b class="sub">/var/lib/banana/desc</b><br>
-Este diretório é o banco de dados para a descrição dos pacote que o empacotador cria no fakeroot no diretório info/desc. Na hora da extração com o <b>plantpkg</b> esse arquivo <b>desc</b> é movido para /var/log/desc com o nome do programa-versao-build.desc!
-Este diretório é especial pois contém todo o formulário e identidade do(s) pacote(s) e suas especificações como (mantenedor, programa, versão, build, descrição, dependencias) entre outras informações.
-
-<p><b class="sub">/var/lib/banana/remove</b><br>
-Este diretório é usado diretamente pelo <b>burnpkg</b>, ele armazena scripts de instruções extras para remoção que o empacotador inseriu. Quando o burnpkg é invocado e se tudo ocorreu certo, antes de começar realmente a remoção ele chama o Script de remoção deste diretório, e depois consulta o /var/log/list para começar a remoção realmente. 
-
-<h3 id="etcbanana" class="titulo">Arquivo de configuração em /etc/banana</h3>
-Arquivos de configurações estão localizados em /etc/banana, é neste ditório que você pode encontrar o arquivo de configuração banana.conf e mudança de execução dos programas.
 
 </body>
 </html>

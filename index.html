@@ -4,12 +4,17 @@
 	<title>BananaPKG - Simple Package Manager</title>
 	<meta charset="utf-8">
 	<style>
-		body{font-size: 1.2em; color: #232323;font-family: courier new; margin: 8%;}
+                nav{background-color: #FFF300; padding: 1%; text-align: center; box-shadow: 0.5px 0.5px 10px 1px #959595;}
+		body{font-size: 1.2em; color: #232323;font-family: courier new; margin: 0;}
+                #principal{margin: 1em auto;max-width: 50em}
 		.logo{width: 18%;}
 		hr{border: 1px dashed; color: #333; margin-top: 4%; margin-bottom: 4%;}
 		h3{margin-top: 3%; margin-bottom: 3%;}
+                #texth1{text-align: center;}
 		#principal{margin-bottom: 12%;}
 		li#categoria{margin: 1.5%;}
+                a{color: #000000;}
+                #download{background-color: #FFFA68; text-align: center; padding: 1%;}
 	</style>
 </head>
 <body>
@@ -17,12 +22,25 @@
 		<img class='logo' src="bananapkg.png">
 	</nav>
 
-<ul>
-	<li><a href="doc-ptbr.html">Documentação em PT-BR</a></li>
-	<li><a href="#">Documentation in English</a></li>
-</ul>
+<div id='principal'>
+<h1 id='texth1'>BananaPKG</h1>
+<p id='download'><a href='#'>Versão 2.1 Disponível</a></p>
+ 
+<h2>Links</h2>
 
-<h2>Deps</h2>
+<a href="#">Dev</a><br>
+<a href="https://github.com/slackjeff/bananapkg" target='_blank'>Github</a><br>
+<a href="https://raw.githubusercontent.com/slackjeff/bananapkg/master/changelog.txt" target='_blank'>Changelog</a><br>
+<a href="doc-ptbr.html">Documentação em PT-BR</a><br>
+
+<hr>
+
+<h2>O que é?</h2>
+<p>BananaPKG é um gerenciador de pacotes de baixo nível escrito em Shell bash que é executada via CLI, com ela é possível <b>Criar</b>, <b>Instalar</b>, <b>Remover</b>, <b>Atualizar</b> e <b>Procurar</b> pacotes.<br>
+Foi criado especialmente para rodar na distribuição from scratch mazonOS, porém é possível executar em qualquer distribuição Linux, desde que as dependências sejam supridas.<br>
+O seu formato de pacote é .mz, um simples tarball comprimido com a ferramenta xz. Para mais detalhes consulte a documentação.</p>
+
+<h2>Dependência</h2>
 <ul>
 	<li>Bash >= 4.4.18</li>
 	<li>GNU Sed >= 4.2.2</li>
@@ -30,4 +48,4 @@
 	<li>xz >= 5.2.2</li>
 </ul>
 
-<hr>
+</div>
