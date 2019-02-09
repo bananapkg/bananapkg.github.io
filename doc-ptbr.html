@@ -4,7 +4,8 @@
 	<title>BananaPKG - Simples Gerenciador de pacotes de baixo nível</title>
 	<meta charset="utf-8">
 	<style>
-		body{font-size: 1.2em; color: #232323;font-family: courier new; margin: 8%;}
+		body{font-size: 1.2em; color: #232323;font-family: courier new;}
+                #principalcon{margin: 1em auto;max-width: 55em}
 		hr{border: 1px dashed; color: #333; margin-top: 4%; margin-bottom: 4%;}
 		h3{margin-top: 3%; margin-bottom: 3%;}
 		li#categoria{margin: 0.5%;}
@@ -21,10 +22,12 @@
                 }
                 #nota li{color: white; margin: 1%;}
                 #parametros{color: #900C3F;}
+                #voltar{font-size: 1.1em; text-align: center;}
 	</style>
 </head>
 <body>
-<b>Atualização: 07/02/2019</b>
+<div id='principalcon'>
+<b>Atualização: 08/02/2019</b>
 <h2>Documentação</h2>
 <h3>Índice</h3>
 <ol id="principal">
@@ -51,6 +54,7 @@
 		     <li><a href="#listdescremove">/var/lib/banana/{list,desc,remove}</a></li>
 		     <li><a href="#etcbanana">Arquivo de configuração em /etc/banana</a></li>
 		     <li><a href="#coresh">core.sh</a></li>
+		     <li><a href="#helpsh">help.sh</a></li>
                 </ul>
 	<li id="categoria" href='#compilacao'>Compilação um caminho correto</li>
                 <ul>
@@ -274,7 +278,7 @@ Ou se caso você tem um leafpad com o build maior que tem no sistema!
 Nota!<br>
 <ul>
     <li>Você viu que o Build é de extrema importância no empacotamento do bananaPKG, por isso é muito importante este campo. Sempre visualize a versão e o build, caso o build seja maior que o que você tem no sistema é sinal que o empacotador fez alguma modificação no mesmo e precisou reempacotar. Patches não contam aqui, já que na parte do empacotamento o software já está em binário.</li>
-    <li>Se você decidir somente instalar um software de uma versão menor que a do que você tem no sistema o plantpkg irá fazer exatamente isto. Ele não faz a verificação de nada, apenas o que é necessário para o bom funcionamento e instalação do pacote.</li>
+    <li>Se você decidir somente instalar um software de uma versão menor que a do que você tem no sistema o parâmetro install irá fazer exatamente isto. Ele não faz a verificação de nada, apenas o que é necessário para o bom funcionamento e instalação do pacote.</li>
     <li>Para atualizar os pacotes o correto a se usar é o parâmetro -u ou upgrade.</li>
 </ul> 
 </div>
@@ -286,16 +290,14 @@ Nota!<br>
 <b>-r</b>, <b>remove</b> <b id="parametros">Remove pacote(s)</b><br>
 </div>
 
-<p>A ferramenta burnpkg serve para uma única finalidade, remover toda hierarquia do pacote no sistema. Sua sintaxe é bem simples é fácil. Supondo que queira remover o pacote leafpad do meu sistema, como root você necessita passar o parâmetro -b ou burn</p>
-
-<b class="sub">-b, burn</b><br>
-<p>O parâmetro -b ou burn serve para remover os pacotes, supondo que queira remover o pacote leafpad</p>
+<b class="sub">-r, remove</b><br>
+<p>O parâmetro -r ou remove serve para remover os pacotes, supondo que queira remover o pacote leafpad</p>
 
 <div id="code">
-# burnpkg burn leafpad<br>
+# banana remove leafpad<br>
 </div>
 
-<p>Se você ter mais de um pacote com o mesmo nome no sistema mas com versões diferentes não será póssivel remover o pacote somente com o parâmetro -b, burn. Ele irá fazer a listagem do(s) pacote(s) com suas respectivas versõe(s) e será imprimido na tela.
+<p>Se você ter mais de um pacote com o mesmo nome no sistema mas com versões diferentes não será póssivel remover o pacote somente com o parâmetro -r, remove. Ele irá fazer a listagem do(s) pacote(s) com suas respectivas versõe(s) e será imprimido na tela.
 Exemplo clássico, supondo que tenho o leafpad com 2 versões diferentes no sistema a versão 1.0 e 2.0:</p>
 
 <div id="code">
@@ -328,6 +330,40 @@ A posição do parâmetro -y pode ser em qualquer lugar!<br>
     <li>Para não precisar ficar passando a confirmação você pode usar o parâmetro -y após o -b ou burn.</li>
 </ul>
 </div>
+
+<hr>
+
+
+<!--
+########################
+ DESENVOLVIMENTO
+########################
+-->
+
+<h2>Desenvolvimento</h2>
+
+<h3 id="listdescremove" class="titulo">/var/lib/banana/{list,desc,remove}</h3>
+Na criação dos pacotes é gerado 3 diretórios que são <b>essenciais</b> para o funcionamento das ferramentos e funciona como um banco de dados. Estes diretórios ficam em /var/lib/banana/ e tem 3 variações, neste tópico você vai saber o que estes diretórios contém e por que é tão essencial.
+
+<p><b class="sub">/var/lib/banana/list</b><br>
+Este diretório é o banco de dados para as listas de instalação dos pacotes. Quando um pacote é "extraido" na / ele fica descontrolado, por isso na criação do pacote é criado uma lista para o usuário ter o controle de tudo que o pacote X instalou no sistema. Esta lista é usado especialmente pela ferramenta de remoção <b>burnpkg</b> e nada além disso. Na hora da remoção de um determinado software o burnpkg consulta este diretório!
+
+<p><b class="sub">/var/lib/banana/desc</b><br>
+Este diretório é o banco de dados para a descrição dos pacote que o empacotador cria no fakeroot no diretório info/desc. Na hora da extração com o parâmetro <b>-i</b>, <b>install</b> esse arquivo <b>desc</b> é movido para /var/log/desc com o nome do programa-versao-build.desc!
+Este diretório é especial pois contém todo o formulário e identidade do(s) pacote(s) e suas especificações como (mantenedor, programa, versão, build, descrição, dependencias) entre outras informações.
+
+<p><b class="sub">/var/lib/banana/remove</b><br>
+Este diretório é usado diretamente pelo parâmetro <b>-r</b>, <b>remove</b> <b></b>, ele armazena scripts de instruções extras para remoção que o empacotador inseriu. Quando o parâmetro remove é invocado e se tudo ocorreu certo, antes de começar realmente a remoção ele chama o Script de remoção deste diretório, e depois consulta o /var/log/list para começar a remoção realmente. 
+
+<h3 id="etcbanana" class="titulo">Arquivo de configuração em /etc/banana</h3>
+Arquivos de configurações estão localizados em /etc/banana, é neste ditório que você pode encontrar o arquivo de configuração banana.conf e mudança de execução dos programas.
+
+<h3 id="coresh" class="titulo">core.sh</h3>
+<p>É a biblioteca de funções aonde todo o funcionamento principal das ferramentas estão! Até a versão 1.5 estas ferramentas eram a parte e se chamavam: burnpkg para remover pacotes, createpkg para criar pacotes e plantpkg para instalar pacotes.<br>
+No trabalho que foi feito na nova versão todo programa foi reformulado e exportado tudo para estão biblioteca que fica localizada em /usr/libexec/banana/.</p>
+
+<h3 id="helpsh" class="titulo">help.sh</h3>
+O módulo help.sh agrupa os módulos de documentação interna do banana. Foi criado a partir da versão 2.1.2, ela fazia parte do core.sh mas por uma questão de velocidade foi melhor exportar externamente os módulos e tornar um só para está finalidade.
 
 <hr>
 
@@ -396,47 +432,11 @@ Nota!
 </div>
 
 
-<hr>
-
-
-<!--
-########################
- DESENVOLVIMENTO
-########################
--->
-
-<h2>Desenvolvimento</h2>
-
-<h3 id="listdescremove" class="titulo">/var/lib/banana/{list,desc,remove}</h3>
-Na criação dos pacotes é gerado 3 diretórios que são <b>essenciais</b> para o funcionamento das ferramentos e funciona como um banco de dados. Estes diretórios ficam em /var/lib/banana/ e tem 3 variações, neste tópico você vai saber o que estes diretórios contém e por que é tão essencial.
-
-<p><b class="sub">/var/lib/banana/list</b><br>
-Este diretório é o banco de dados para as listas de instalação dos pacotes. Quando um pacote é "extraido" na / ele fica descontrolado, por isso na criação do pacote é criado uma lista para o usuário ter o controle de tudo que o pacote X instalou no sistema. Esta lista é usado especialmente pela ferramenta de remoção <b>burnpkg</b> e nada além disso. Na hora da remoção de um determinado software o burnpkg consulta este diretório!
-
-<p><b class="sub">/var/lib/banana/desc</b><br>
-Este diretório é o banco de dados para a descrição dos pacote que o empacotador cria no fakeroot no diretório info/desc. Na hora da extração com o <b>plantpkg</b> esse arquivo <b>desc</b> é movido para /var/log/desc com o nome do programa-versao-build.desc!
-Este diretório é especial pois contém todo o formulário e identidade do(s) pacote(s) e suas especificações como (mantenedor, programa, versão, build, descrição, dependencias) entre outras informações.
-
-<p><b class="sub">/var/lib/banana/remove</b><br>
-Este diretório é usado diretamente pelo <b>burnpkg</b>, ele armazena scripts de instruções extras para remoção que o empacotador inseriu. Quando o burnpkg é invocado e se tudo ocorreu certo, antes de começar realmente a remoção ele chama o Script de remoção deste diretório, e depois consulta o /var/log/list para começar a remoção realmente. 
-
-<h3 id="etcbanana" class="titulo">Arquivo de configuração em /etc/banana</h3>
-Arquivos de configurações estão localizados em /etc/banana, é neste ditório que você pode encontrar o arquivo de configuração banana.conf e mudança de execução dos programas.
-
-<h3 id="coresh" class="titulo">core.sh</h3>
-<p>É a biblioteca de funções aonde todo o funcionamento principal das ferramentas estão! Até a versão 1.5 estas ferramentas eram a parte e se chamavam: burnpkg para remover pacotes, createpkg para criar pacotes e plantpkg para instalar pacotes.<br>
-No trabalho que foi feito na nova versão todo programa foi reformulado e exportado tudo para estão biblioteca que fica localizada em /usr/libexec/banana/.</p>
-
-
-<hr>
-
 <!--
 ########################
  ENFEITES
 ########################
 -->
-
-
 
 <h3 id="enfeites" class="titulo">Enfeites do pacote</h3>
 <p>Você faz o fakeroot por alguns motivos, entres eles o enfeite do pacote! Mas isso se o software necessitar, um software que executa em linha de comando terá poucos enfeites.<br>
@@ -541,6 +541,14 @@ usr/bin/nano: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically l
 </div>
 
 <p>O binário de 168M reduziu para 5,5M! Será que faz diferença? é essencial usar o strip em binários, <b>JAMAIS</b> se esqueça pois isso faz toda diferença no tamanho do pacote.</p>
+
+
+<hr>
+
+<a href='./index.html' id='voltar'>VOLTAR</a>
+
+</div>
+
 
 
 </body>
