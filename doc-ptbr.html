@@ -27,7 +27,7 @@
 </head>
 <body>
 <div id='principalcon'>
-<b>Atualização: 08/02/2019</b>
+<b>Atualização: 10/02/2019</b>
 <h2>Documentação</h2>
 <h3>Índice</h3>
 <ol id="principal">
@@ -113,6 +113,37 @@ MODO DE UTILIZAÇÃO
 
 <h2 id="modo-de-utilizacao">Modo de utilização</h2>
 
+<pre>Parâmetos Resumidos:
+
+-c, create
+	Cria um pacote
+
+-r, remove
+	Remove um pacote
+
+-y
+	Está opção está ligada diretamente ao -r, remove, ela serve para auto confirmar a remoção do pacote	
+	você pode declarar em /etc/banana/banana.conf a variável AUTO_YES para auto remover,
+	sem ter que passar este parâmetro. Você pode utilizar -y antes ou depois do argumento (pacote). Exemplo:
+	banana remove -y leafpad OU banana remove leafpad -y
+
+-i, install
+	Instala um pacote
+
+-u, upgrade
+	Atualiza um pacote
+
+-s, search
+	Procura um pacote no sistema localmente, está opção é válida somente para pacotes que foram criados e
+	instalados com o banana
+
+-v, --verbose
+	Modo verboso, em algumas partes do programa.
+
+<b>Para maiores informações sobre cada parâmetro leia abaixo.</b>
+</pre>
+
+
 <h3 id="criar-pacote" class="titulo">Como criar um pacote</h3>
 <b>banana [create] [nome_do_pacote-versão-build.mz]</b><br><br>
 
@@ -194,6 +225,7 @@ Se caso o programa que você gerou o pacote necessitar de dependências <strike>
 <pre>
 <b>dep</b>=("X" "Y" "Z")
 </pre>
+
 
 <h3 id="scripts" class="titulo">Scripts do diretório info/</h3>
 
@@ -323,11 +355,55 @@ A posição do parâmetro -y pode ser em qualquer lugar!<br>
 # <b>banana remove</b> leafpad <b>-y</b><br>
 </div>
 
+<p>Se você sabe exatamente o que está fazendo, você pode sempre auto afirmar para remover o pacote. Existe uma variável no arquivo de configuração 
+em /etc/banana/banana.conf chamada AUTO_YES, basta ligar com a opção <b>1</b>.</p>
+
+
 <div id="nota">
 <b>Nota!</b><br>
 <ul>
     <li>Você pode excluir vários pacotes de uma vez, basta específicar.</li>
-    <li>Para não precisar ficar passando a confirmação você pode usar o parâmetro -y após o -b ou burn.</li>
+    <li>Para não precisar ficar passando a confirmação você pode usar o parâmetro -y antes ou após o parâmetro de chamada -r, remove.</li>
+</ul>
+</div>
+
+
+<h3 id="remover-pacote" class="titulo">Como Procurar um pacote</h3>
+<b>banana [opções] [nome_do_pacote] ou [nome_do_pacote-versão]</b><br><br>
+
+<div id="code">
+<b>-s</b>, <b>search</b> <b id="parametros">Procura pacote(s) no sistema</b><br>
+</div>
+
+<p>Com a opção -s ou search você pode procurar pacotes no seu sistema local, você pode passar um ou mais nome de pacote para o banana
+fazer a procura, ele faz uma listagem simples do diretório /var/lib/banana/desc/ se o pacote existir ele retornara toda info do 
+pacote como mantenedor, nome do pacote, versão etc...<br>
+Se você tem conhecimento de expressão regular REGEX, você pode usar na pesquisa, não é permitido usar glob do shell para está
+finalidade.</p>
+
+<b>Exemplo:</b>
+
+<div id=code>
+<p>Supondo que eu tenha somente uma instalação do nano no sistema<br><br>
+<b>banana -s nano</b></p>
+
+<p>Se eu tiver 3 versões e queira só puxar versões do nano acima da versão 2<br><br>
+<b>banana -s nano-[2-3]+.*</b></p>
+
+<p>Ou se eu lembro que o pacote começa com flat mas não sei o resto, posso fazer uma listagem de tudo que comece com flat e depois (qualquer-coisa)
+que serão listados todos pacotes que iniciam com flat.<br><br>
+
+<b>banana -s ^flat.*</b>
+</p>
+
+</div>
+
+<div id="nota">
+<b>Nota!</b><br>
+<ul>
+    <li>Se caso você fez a instalação direta do programa e não utilizou as ferramentas do banana para criar e instalar
+    o pacote, não será visto pelo gerenciador.</li>
+    <li>Use expressões regulares para deixar fino a sua pesquisa.</li>
 </ul>
 </div>
 
