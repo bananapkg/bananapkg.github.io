@@ -122,7 +122,7 @@ MODO DE UTILIZAÇÃO
 	Remove um pacote
 
 -y
-	Está opção está ligada diretamente ao -r, remove, ela serve para auto confirmar a remoção do pacote	
+	Está opção é aliada ao parâmetro -r, remove. Ela serve para auto confirmar a remoção do pacote	
 	você pode declarar em /etc/banana/banana.conf a variável AUTO_YES para auto remover,
 	sem ter que passar este parâmetro. Você pode utilizar -y antes ou depois do argumento (pacote). Exemplo:
 	banana remove -y leafpad OU banana remove leafpad -y
@@ -136,6 +136,10 @@ MODO DE UTILIZAÇÃO
 -s, search
 	Procura um pacote no sistema localmente, está opção é válida somente para pacotes que foram criados e
 	instalados com o banana
+
+-ol, --one-line
+	Está opção é aliada ao parâmetro -s, search. Ativando está opção a saída na tela fica em somente em
+	uma linha <b>programa-versão-build</b>.
 
 -v, --verbose
 	Modo verboso, em algumas partes do programa.
@@ -375,28 +379,60 @@ em /etc/banana/banana.conf chamada AUTO_YES, basta ligar com a opção <b>1</b>.
 <b>-s</b>, <b>search</b> <b id="parametros">Procura pacote(s) no sistema</b><br>
 </div>
 
-<p>Com a opção -s ou search você pode procurar pacotes no seu sistema local, você pode passar um ou mais nome de pacote para o banana
+<p>Com a opção -s ou search você pode procurar pacotes no seu sistema localmente, você pode passar um ou mais nome de pacote para o banana
 fazer a procura, ele faz uma listagem simples do diretório /var/lib/banana/desc/ se o pacote existir ele retornara toda info do 
-pacote como mantenedor, nome do pacote, versão etc...<br>
-Se você tem conhecimento de expressão regular REGEX, você pode usar na pesquisa, não é permitido usar glob do shell para está
-finalidade.</p>
+pacote como> <b>mantenedor</b>, <b>nome do pacote</b>, <b>versão</b>, <b>descrição</b> etc...<br>
+Se você tem conhecimento de expressão regular REGEX, você pode usar na pesquisa, não é permitido usar glob/wildcards do shell para está
+finalidade, por padrão é desabilitado.</p>
 
 <b>Exemplo:</b>
 
 <div id=code>
-<p>Supondo que eu tenha somente uma instalação do nano no sistema<br><br>
+<p>Supondo que eu tenha somente uma instalação do nano no sistema, posso fazer uma pesquisa normal.<br><br>
 <b>banana -s nano</b></p>
 
-<p>Se eu tiver 3 versões e queira só puxar versões do nano acima da versão 2<br><br>
-<b>banana -s nano-[2-3]+.*</b></p>
+<p>Se eu tiver 3 versões e queira só puxar versões do nano acima da versão 2 até a versão 3<br><br>
+<b>banana -s 'nano-[2-3]+.*'</b></p>
 
 <p>Ou se eu lembro que o pacote começa com flat mas não sei o resto, posso fazer uma listagem de tudo que comece com flat e depois (qualquer-coisa)
 que serão listados todos pacotes que iniciam com flat.<br><br>
 
-<b>banana -s ^flat.*</b>
+<b>banana -s '^flat.*'</b>
 </p>
 
+<p> Se por acaso desejo listar somente um range de nomes que começam de <b>a</b> Á <b>c</b>, poderia fazer:<br><br>
+
+<b>banana -s '^[a-c].*'</b>
+
+<p>Ou se você precisa de um range especifico com versões especificas:</p>
+
+<b>banana -s '^[a-b].*-[1-2].*'</b><br><br>
 </div>
+
+<br>
+
+<b class="sub">O parâmetro -ol, --one-line</b><br><br>
+<p>Este parâmetro faz ao inverso da impressão da pesquisa normal, se você precisa de algo mais enxuto está é a opção correta para
+você.</p>
+
+<div id='code'>
+<b>banana search nano gedit --one-line</b><br>
+[FOUND] nano-3.2-1<br>
+[FOUND] gedit-3.22.1-1<br>
+<br>
+ou<br>
+<br>
+<b>banana search nano gedit -ol</b><br>
+[FOUND] nano-3.2-1<br>
+[FOUND] gedit-3.22.1-1<br>
+<br>
+<b>banana search -ol nano gedit </b><br>
+[FOUND] nano-3.2-1<br>
+[FOUND] gedit-3.22.1-1<br>
+
+
+</div>
+
 
 <div id="nota">
 <b>Nota!</b><br>
@@ -404,6 +440,8 @@ que serão listados todos pacotes que iniciam com flat.<br><br>
     <li>Se caso você fez a instalação direta do programa e não utilizou as ferramentas do banana para criar e instalar
     o pacote, não será visto pelo gerenciador.</li>
     <li>Use expressões regulares para deixar fino a sua pesquisa.</li>
+    <li>Use o parâmetro -ol,--one-line para pipelines com outros comandos =)</li>
+    <li>Use sempre aspas para englobar sua expressão, para o shell não interpretar.</li>
 </ul>
 </div>
 
@@ -432,7 +470,33 @@ Este diretório é especial pois contém todo o formulário e identidade do(s) p
 Este diretório é usado diretamente pelo parâmetro <b>-r</b>, <b>remove</b> <b></b>, ele armazena scripts de instruções extras para remoção que o empacotador inseriu. Quando o parâmetro remove é invocado e se tudo ocorreu certo, antes de começar realmente a remoção ele chama o Script de remoção deste diretório, e depois consulta o /var/log/list para começar a remoção realmente. 
 
 <h3 id="etcbanana" class="titulo">Arquivo de configuração em /etc/banana</h3>
-Arquivos de configurações estão localizados em /etc/banana, é neste ditório que você pode encontrar o arquivo de configuração banana.conf e mudança de execução dos programas.
+<p>Arquivos de configurações estão localizados em /etc/banana/, é neste diretório que você pode encontrar o arquivo de 
+configuração banana.conf.
+Existem 2 variáveis para você preencher e mudar o estado de como o programa é executado, são elas:</p>
+
+<b class="sub">AUTO_YES</b><br>
+<p>Está chave é a alma gêmea do parâmetro -r, remove. Quando você vai remover programa(s) ele pede confirmação do mesmo. Para
+não ter que ficar confirmando ou passando o parâmetro -y para auto confirmar é só alterar o estado desta chave.</p>
+
+<div id='code'>
+	<b>0</b> Para desligado [Padrão]<br>
+	<b>1</b> Para ligado<br>
+</div>
+
+<p>Com isto o programa vai fazer a tomada de decisão certa e auto confirma a remoção do(s) programa(s).</p>
+
+
+<b class="sub">MAINTAINER</b><br>
+<p>Por uma questão de praticidade foi criado está chave que é a alma gêmea do -g, generate. Para não ter que passar o nome do
+mantenedor do pacote no arquivo <b>desc</b> manual toda vez que você for empacotar, você pode preencher com o
+seu nome e email neste campo, exemplo:</p>
+
+<div id='code'>
+	<b>MAINTAINER=</b>'Jefferson Rocha < root@slackjeff.com.br >'
+</div>
+
+<p>Feito isto sempre quando você for empacotar o campo será preenchido.</p>
+
 
 <h3 id="coresh" class="titulo">core.sh</h3>
 <p>É a biblioteca de funções aonde todo o funcionamento principal das ferramentas estão! Até a versão 1.5 estas ferramentas eram a parte e se chamavam: burnpkg para remover pacotes, createpkg para criar pacotes e plantpkg para instalar pacotes.<br>
