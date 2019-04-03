@@ -4,10 +4,11 @@
 	<title>BananaPKG - Simples Gerenciador de pacotes de baixo nível</title>
 	<meta charset="utf-8">
 	<style>
-		body{font-size: 1.2em; color: #232323;font-family: courier new;}
+		body{font-size: 1.2em; color: #232323;font-family: courier new; margin-left: 4%; margin-right: 4%;}
                 #principalcon{margin: 1em auto;max-width: 55em}
 		hr{border: 1px dashed; color: #333; margin-top: 4%; margin-bottom: 4%;}
 		h3{margin-top: 3%; margin-bottom: 3%;}
+		img{margin-left: 19%;}
 		li#categoria{margin: 0.5%;}
                 .sub{color: #FF3C12;}
 		#code{background-color: #b8b8b8; padding: 1%; color: #232323;}
@@ -193,7 +194,8 @@ MODO DE UTILIZAÇÃO
 -y
 	Está opção é aliada ao parâmetro -r, remove. Ela serve para auto confirmar a remoção do pacote	
 	você pode declarar em /etc/banana/banana.conf a variável AUTO_YES para auto remover,
-	sem ter que passar este parâmetro. Você pode utilizar -y antes ou depois do argumento (pacote). Exemplo:
+	sem ter que passar este parâmetro. Você pode utilizar -y antes ou depois do argumento (pacote).<br>
+	Exemplo:
 	banana remove -y leafpad OU banana remove leafpad -y
 
 -i, install
@@ -206,11 +208,11 @@ update
     Opção para Atualizar o Bananapkg via Internet.
 
 -s, search
-	Procura um pacote no sistema localmente, está opção é válida somente para pacotes que foram criados e
-	instalados com o banana
+	Procura um pacote no sistema localmente, está opção é válida somente para pacotes que foram <br>criados
+	e instalados com o banana
 
 -ol, --one-line
-	Está opção é aliada ao parâmetro -s, search. Ativando está opção a saída na tela fica em somente em
+	Está opção é aliada ao parâmetro -s, search. Ativando está opção a saída na tela fica em<br>somente em
 	uma linha <b>programa-versão-build</b>.
 
 -v, --verbose
@@ -513,6 +515,8 @@ O mesmo esta disponivel em sua <b>HOME</b>. Copie para a HOME do root.
 <p>
 Pronto! Agora você já pode assinar seus pacotes ;) Lembre-se o quanto é importante proteger sua chave privada! E também ter uma senha forte no seu usuário comum e root.
 </p>
+
+<img src='bananagpg1.gif'>
 
 <p><b class="sub">Verificar Assinatura.</b><br>
 
