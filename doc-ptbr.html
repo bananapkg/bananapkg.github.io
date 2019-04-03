@@ -62,6 +62,10 @@
 		     <li><a href="#enfeites">Enfeites do pacote</a></li>
 		     <li><a href="#strip">Strip Now</a></li>
                 </ul>
+	<li id="categoria" href='#compilacao'>Segurança</li>
+                <ul>
+		     <li><a href="#diferencial">O diferencial</a></li>
+                </ul>
 </ol>
 
 <hr>
@@ -72,6 +76,29 @@ O PROJETO
 #####################################
 -->
 
+<pre>                                                      
+    O Inicio                                                    
++--------------+                                              
+| <b>Programa     |                                              
+| Compilado</b>    |          +-------------+                     
++--------------+          | <b>Copiar Docs</b> |-----------+         
+      |                   +--+----------+           |         
+      |                      |            +----------------+  
+      |                      |            | <b>Zippar Manuais</b> |  
+      |                      |            +----+-----------+  
+      +--- -----+        +-----------+         |              
+      |<b>Fake Root</b>|--------| <b>Diretório</b> |         |              
+      +---------+        | <b>Info/</b>     |    +------------+      
+                         +-----------+    | <b>Enfeites</b>   |      
+                                          +------------+      
+                         +------------+        |              
+                         |<b>Gerar Pacote</b>|--------+              
+                         +------------+                       
+          +---+               |                               
+          |<b>Fim</b>|---------------+                               
+          +---+
+</pre>
+
 <h3 id="bananapkgprojeto" class="titulo">O projeto BananaPKG</h3>
 O bananaPKG foi iniciado com suas ferramentas de baixo nível indenpendentes. Porém na versão 1.5, passou a ser uma ferramenta única que tem suas chamadas (create, install, upgrade, remove, search)</b><br><br>
 <br>
@@ -79,7 +106,7 @@ Você pode conferir a sintaxe no indice: <a href="#modo-de-utilizacao">Modo de u
 
 
 <h3 id="inspirado" class="titulo">BananaPKG é fork de qual gerenciador?</h3>
-Nenhum. O bananaPKG foi <i>criado do zero</i>, porém teve inspiração nos utilitários <b>installpkg</b>, <b>upgradepkg</b>, <b>removepkg</b> da distribuição Slackware que também é escrito do zero e em Shell Script. O 
+Nenhum. O bananaPKG foi <i>criado do zero</i>, porém teve inspiração nos utilitários <b>installpkg</b>, <b>upgradepkg</b>, <b>removepkg</b> da distribuição Slackware que também é escrito do zero e em Shell Script.
 
 
 <h3 id="linguagem-bananapkg" class="titulo">Em qual linguagem é escrito o BananaPKG</h3>
@@ -87,20 +114,46 @@ O BananaPKG foi criado na linguagem de programação Shell Bash. Feito para ser 
 
 
 <h3 id="bananapkg-alto-nivel" class="titulo">BananaPKG é de alto nível?</h3>
-Não! BananaPKG é uma ferramenta de baixo nível, com ela você pode <b>Criar</b>, <b>Instalar</b>, <b>Atualizar</b>, <b>Remover</b> e <b>procurar</b> pacotes do seu sistema.<br>
+
+<p>
+Não! BananaPKG é uma ferramenta de baixo nível, com ela você pode <b>Criar</b>, <b>Instalar</b>, <b>Atualizar</b>, <b>Remover</b> e <b>procurar</b> pacotes do seu sistema.
+</p>
+
+<p>
 Ou seja, ela serve para gerenciar os pacotes e cuida-los. Se caso você seja um bom programador de Shell e queira fazer uma extensão de alto nível que resolva dependências, há uma array/lista no arquivo info/desc que contém as dependências do pacote.
+</p>
+
+<p>
 Essa array foi criada e pensada para um uso futuro para quem deseja fazer uma extensão. Por padrão o projeto não terá oficialmente uma extensão para esta finalidade.
+</p>
 
 <h3 id="formato-pacote" class="titulo">Qual o formato do pacote?</h3>
-O formato de pacote próprio é o <b>.mz</b>. Como inicialmente o BananaPKG foi criado para suprir a necessidade da distribuição Linux mazonOS, que é uma distribuição criada do zero e não possuia um gerenciador de pacotes, acabou que o formato ficou e vai continuar como .mz.<br>
+
+<p>
+O formato de pacote próprio é o <b>.mz</b>. Como inicialmente o BananaPKG foi criado para suprir a necessidade da distribuição Linux mazonOS, que é uma distribuição criada do zero e não possuia um gerenciador de pacotes, acabou que o formato ficou e vai continuar como .mz.
+</p>
+
+<p>
 Este formato é um simples arquivo compactado com o utilitário tar e comprimido com o utilitário xz. 
-Mas sinta-se a vontade para modificar ao seu gosto a extensão se assim necessitar... O programa está bem modularizado e um bom programador em Shell consegue fazer a modificação para sua necessidade.
+Mas sinta-se a vontade para modificar ao seu gosto a extensão se assim necessitar...
+</p>
+
+<p>
+O programa está bem modularizado e um bom programador em Shell consegue fazer a modificação para sua necessidade.
+</p>
 
 <h3 id="passar-amigos" class="titulo">Posso passar os pacotes que criei para amigos?</h3>
+
+<p>
 Com toda certeza. Mas para quem ser o receptor do pacote vai precisar utilizar o BananaPKG também. Isso devido ao fato que o pacote que ele gera depende do instalador para tratar o pacote antes de instalar.
+</p>
+
+<p>
+Ou seja toda a estrutura é própria!
+</p>
+
 
 <hr>
-
 
 
 <!--
@@ -108,7 +161,6 @@ Com toda certeza. Mas para quem ser o receptor do pacote vai precisar utilizar o
 MODO DE UTILIZAÇÃO
 #####################################
 -->
-
 
 
 <h2 id="modo-de-utilizacao">Modo de utilização</h2>
@@ -164,10 +216,72 @@ update
 <b>-c</b>, <b>create</b> <b id="parametros">Criação de pacote(s)</b><br>
 </div>
 
-<p>Após a você ter feito o fakeroot do pacote, você irá necessitar seguir um passo a passo para ter êxito. O primeiro passo é criar um diretório chamado <b>info/</b> e um arquivo dentro do diretório chamado <b>desc</b>. Esse arquivo <b>desc</b> é de muita importância para o pacote. É atráves dele que toda conferência do pacote é feita nos outros utilitários.<br>
-Você pode criar manualmente ou automaticamente com a opção <b>-g</b>, <b>generate</b>. Está opção irá criar o diretório info/ e o arquivo desc pronto para edição.</p>
+<p>
+Para ingressar nesta jornada de empacotador, você ira necessitar entender o conceito básico do Fakeroot. Mas o que é Fakeroot?
+</p>
 
-<p>O arquivo desc tem um série de variáveis que precisam ser editadas, sendo que todas <b>menos</b> a array/lista <b>dep</b> precisa ser preenchida, ás variáveis são:</p>
+<b class='sub'>Fakeroot</b>
+
+<p>
+Fakeroot significa Raiz Falsa, para entendermos o conceito precisamos saber como é instalado um programa por de trás dos panos.
+</p>
+
+<p>
+Ao grosso modo ao instalar um programa ele possui toda a estrutura dos diretórios, como usr/ etc/... Está estrutura é solta na raiz <b>/</b> do sistema, logo podemos saber que a instalação será feita.
+</p>
+
+<p>
+Isso se tratando de softwares convencionais, os opcionais como Firefox/Telegram etc... Normalmente ficam em um diretório a parte em opt/ e normalmente já são pré-compilados.
+</p>
+
+<p>
+Quando compilamos e fizemos um make install é feito o passo que falamos acima, é solto basicamente toda a estrutura do programa pré compilado na raiz <b>/</b>.
+</p>
+
+<p>
+É ai que entra o fakeroot, vamos enganar o sistema dizendo um diretório especifico ao invés de instalar na raiz.
+Este diretório falso é essencial, pois podemos manipular todo o programa pre-compilado antes da instalação.
+</p>
+
+<p>
+Assim fizemos os nossos enfeites que vamos abordar mais adiante.
+</p>
+
+<p>
+Para um exemplo, supondo que rodei toda a base ./configure && make e ao invés de por make install somente botaria em <b>make install DESTDIR=/Um/Diretorio</b>
+</p>
+
+<hr>
+
+<p>
+Voltando... Você irá necessitar seguir um passo a passo para ter êxito. O primeiro passo é criar um diretório chamado <b>info/</b> e um arquivo dentro do diretório chamado <b>desc</b>.
+</p>
+
+<p>
+Esse arquivo <b>desc</b> é de muita importância para o pacote. É atráves dele que toda conferência do pacote é feita nos outros utilitários.
+</p>
+
+<p>
+Você pode criar manualmente ou automaticamente com a opção <b>-g</b>, <b>generate</b>. Está opção irá criar o diretório info/ e o arquivo desc pronto para edição.</p>
+</p>
+
+
+<div id="nota">
+    <b>Nota!</b>
+    <p>
+    Não se preocupe se você ter vários arquivos dentro de info/ como rm.sh e pos.sh.
+    Eles não serão sobreescritos se você executar o banana -g, generate.
+    </p>
+    
+    <p>
+    O único arquivo que é gerado é o desc, tome cuidado para não sobreescrever o mesmo se já estiver preenchido.
+    Se não você terá que preencher tudo novamente.
+    </p>
+</div>
+
+<p>
+O arquivo desc tem um série de variáveis que precisam ser editadas, sendo que todas <b>menos</b> a array/lista <b>dep</b> precisa ser preenchida, ás variáveis são:
+</p>
 
 <div id="code">
 # Nome do mantenedor do pacote<br/>
@@ -196,8 +310,13 @@ Você pode criar manualmente ou automaticamente com a opção <b>-g</b>, <b>gene
 </div>
 
 
-<p>Preencha todas as variáveis em letras minúsculas, lembre-se de por no campo <b>pkgname</b> o nome correto do programa e no campo <b>version</b> a versão correta do programa. Todos estes campos são usados não só para imprimir na tela para o usuário, mas também para conferencias importantes :)<br>
-Decifrando os campos:</p>
+<p>
+Preencha todas as variáveis em letras minúsculas, lembre-se de por no campo <b>pkgname</b> o nome correto do programa e no campo <b>version</b> a versão correta do programa. 
+</p>
+
+<p>
+Todos estes campos são usados não só para imprimir na tela para o usuário, mas também para conferencias importantes :) Decifrando os campos:
+</p>
 
 <p><b class='sub'>maintainer</b><br/>
 Este campo necessita ter o nome do mantenedor do pacote seguido do seu email, o ideal é ser neste e somente neste formato:
@@ -246,7 +365,7 @@ Após você ter preenchido todo o arquivo <b>desc</b> você talvez necessite faz
 É o caso por exemplo do programa rsync que exige que antes de instalar o mesmo tenha o grupo <b>rsyncd</b> e o usuário <b>rsyncd</b>. Para isto existem três scripts RECONHECIVEIS pelo bananapkg: <b>pre.sh</b> <b>pos.sh</b> <b>rm.sh</b>. Com estes scripts você pode fazer ainda mais a manipulação do seu pacote.
 
 <p><b class="sub">pre.sh</b><br>
-<p>Este script é manipulado pelo <b>plantpkg</b> e é executado na pré instalação do pacote, ou seja antes do pacote ser instalado. Toda rotina que você precisa antes do software estar instalado você poderá adicionar neste script! Como um exemplo vamos criar um usuário e grupo:</p>
+<p>Este script é manipulado pelo <b>banana install</b> e é executado na pré instalação do pacote, ou seja antes do pacote ser instalado. Toda rotina que você precisa antes do software estar instalado você poderá adicionar neste script! Como um exemplo vamos criar um usuário e grupo:</p>
 
 <div id="code">
 cat > "pre.sh" << 'EOF'<br>
@@ -259,8 +378,13 @@ EOF
 </div>
 
 <p><b class="sub">pos.sh</b><br>
-<p>Este script também é manipulado pelo utilitário <b>plantpkg</b> e é executado na pós instalação do pacote, tudo que você necessitar fazer na pós instalação é crucial por neste script. Supondo que eu precisasse na pós-instalação do pacote criar um link simbólico para o firefox em /usr/bin, devemos criar um script <b>pre.sh</b> e adicionar informações lá dentro! Lembrando que deve ser dentro do diretório <b>info/</b>.
-Uma rotina clássica:</p>
+<p>
+Este script também é manipulado pelo utilitário <b>banana install</b> e é executado na pós instalação do pacote, tudo que você necessitar fazer na pós instalação é crucial por neste script.
+</p>
+
+<p>
+Supondo que eu precisasse na pós-instalação do pacote criar um link simbólico para o firefox em /usr/bin, devemos criar um script <b>pre.sh</b> e adicionar informações lá dentro! Lembrando que deve ser dentro do diretório <b>info/</b>. Uma rotina clássica:
+</p>
 
 <div id="code">
 cat > "pos.sh" << 'EOF'
@@ -271,8 +395,17 @@ EOF
 </div>
 
 <p><b class="sub">rm.sh</b><br>
-<p>O script rm.sh é executado na remoção do pacote e utilizado pelo utilitário burnpkg. <b>Este script é essencial</b> para uma limpeza mais profunda que o pacote deixou. Se você adicionou algumas rotinas no <b>pre.sh</b>/<b>pos.sh</b> de <u>criações</u> você precisa reverter tudo neste script. Afinal não queremos deixar sujeira na máquina do destinátario não é?<br>
-Vamos a um exemplo clássico, adicionamos logo acima no script pre.sh e pos.sh a criação de Adicionar o grupo rsyncd e o usuário rsyncd. No script pos.sh criamos o link simbólico do firefox, então precisamos reverter isso para removê-los.</p>
+<p>
+O script rm.sh é executado na remoção do pacote e utilizado pelo utilitário burnpkg. <b>Este script é essencial</b> para uma limpeza mais profunda que o pacote deixou. Se você adicionou algumas rotinas no <b>pre.sh</b>/<b>pos.sh</b> de <u>criações</u>.
+</p>
+
+<p>
+Você precisa reverter tudo neste script. Afinal não queremos deixar sujeira na máquina do destinátario não é?
+</p>
+
+<p>
+Vamos a um exemplo clássico, adicionamos logo acima no script pre.sh e pos.sh a criação de Adicionar o grupo rsyncd e o usuário rsyncd. No script pos.sh criamos o link simbólico do firefox, então precisamos reverter isso para removê-los.
+</p>
 
 <div id="code">
 cat > "rm.sh" << 'EOF'<br>
@@ -306,8 +439,17 @@ EOF
 <br>
 </div>
 
-<p>o parâmetro -i faz a instalação e atualização dos pacotes! A instalação é burra, ou seja ela não verifica versões, já se você usar a opção para atualizar o pacote ele faz a checkagem do nome, versão e build do pacote, se a versão for uma versão superior ele remove toda a hierarquia da versão anterior e instala a nova versão, isso é válido também para o build, se caso o build for maior ele faz o mesmo processo. Por isto o build é tão importante também!<br>
+<p>
+O parâmetro -i faz a instalação e atualização dos pacotes! A instalação é burra, ou seja ela não verifica versões, já se você usar a opção para atualizar o pacote ele faz a checkagem do nome, versão e build do pacote.
+</p>
+
+<p>
+Se a versão for uma versão superior ele remove toda a hierarquia da versão anterior e instala a nova versão, isso é válido também para o build, se caso o build for maior ele faz o mesmo processo. Por isto o build é tão importante também!
+</p>
+
+<p>
 Se caso a Versão ou Build que você deseja "atualizar" for uma versão inferior ele não faz nada. É importante saber que se o pacote <b>não estiver instalado</b> o programa vai alertar e não vai instalar.<br/>Supondo que queira atualizar a versão do leafpad da 1.0 para versão 2.0:</p>
+</p>
 
 <div id="code">
 # banana upgrade leafpad-2.0-1.mz<br>
@@ -342,8 +484,13 @@ Nota!<br>
 # banana remove leafpad<br>
 </div>
 
-<p>Se você ter mais de um pacote com o mesmo nome no sistema mas com versões diferentes não será póssivel remover o pacote somente com o parâmetro -r, remove. Ele irá fazer a listagem do(s) pacote(s) com suas respectivas versõe(s) e será imprimido na tela.
+<p>
+Se você ter mais de um pacote com o mesmo nome no sistema mas com versões diferentes não será póssivel remover o pacote somente com o parâmetro -r, remove. Ele irá fazer a listagem do(s) pacote(s) com suas respectivas versõe(s) e será imprimido na tela.
+</p>
+
+<p>
 Exemplo clássico, supondo que tenho o leafpad com 2 versões diferentes no sistema a versão 1.0 e 2.0:</p>
+</p>
 
 <div id="code">
 # banana remove leafpad<br>
@@ -351,7 +498,9 @@ Exemplo clássico, supondo que tenho o leafpad com 2 versões diferentes no sist
 [FOUND] leafpad-2.0<br>
 </div>
 
-<p>Então para fazer remoção neste caso eu precisarei passar o <b>nome</b> do pacote traço <b>versão</b>, ficando <b>nomepacote-versão</b>. Vamos supor que queira remover a versão do leafpad 2.0:</p>
+<p>
+Então para fazer remoção neste caso eu precisarei passar o <b>nome</b> do pacote traço <b>versão</b>, ficando <b>nomepacote-versão</b>. Vamos supor que queira remover a versão do leafpad 2.0:
+</p>
 
 <div id="code">
 # banana remove leafpad-2.0<br>
@@ -388,11 +537,16 @@ em /etc/banana/banana.conf chamada AUTO_YES, basta ligar com a opção <b>1</b>.
 <b>-s</b>, <b>search</b> <b id="parametros">Procura pacote(s) no sistema</b><br>
 </div>
 
-<p>Com a opção -s ou search você pode procurar pacotes no seu sistema localmente, você pode passar um ou mais nome de pacote para o banana
-fazer a procura, ele faz uma listagem simples do diretório /var/lib/banana/desc/ se o pacote existir ele retornara toda info do 
+<p>
+Com a opção -s ou search você pode procurar pacotes no seu sistema localmente, você pode passar um ou mais nome de pacote para o banana fazer a procura. 
+</p>
+
+<p>
+Ele faz uma listagem simples do diretório /var/lib/banana/desc/ se o pacote existir ele retornara toda info do 
 pacote como> <b>mantenedor</b>, <b>nome do pacote</b>, <b>versão</b>, <b>descrição</b> etc...<br>
 Se você tem conhecimento de expressão regular REGEX, você pode usar na pesquisa, não é permitido usar glob/wildcards do shell para está
-finalidade, por padrão é desabilitado.</p>
+finalidade, por padrão é desabilitado.
+</p>
 
 <b>Exemplo:</b>
 
@@ -466,7 +620,10 @@ ou<br>
 <h2>Desenvolvimento</h2>
 
 <h3 id="listdescremove" class="titulo">/var/lib/banana/{list,desc,remove}</h3>
+
+<p>
 Na criação dos pacotes é gerado 3 diretórios que são <b>essenciais</b> para o funcionamento das ferramentos e funciona como um banco de dados. Estes diretórios ficam em /var/lib/banana/ e tem 3 variações, neste tópico você vai saber o que estes diretórios contém e por que é tão essencial.
+</p>
 
 <p><b class="sub">/var/lib/banana/list</b><br>
 Este diretório é o banco de dados para as listas de instalação dos pacotes. Quando um pacote é "extraido" na / ele fica descontrolado, por isso na criação do pacote é criado uma lista para o usuário ter o controle de tudo que o pacote X instalou no sistema. Esta lista é usado especialmente pela ferramenta de remoção <b>burnpkg</b> e nada além disso. Na hora da remoção de um determinado software o burnpkg consulta este diretório!
@@ -526,21 +683,49 @@ COMPILAÇÃO
 
 <h2>Compilação um caminho correto</h2>
 
-Compilar um software não é fácil! Exige muita leitura e boas práticas que você deve seguir para chegar no objetivo de uma maneira correta. Este tópico visa abranger algumas boas práticas que você deve levar em consideração na hora de compilar um software.<br>
+<p>
+Compilar um software não é fácil! Exige muita leitura e boas práticas que você deve seguir para chegar no objetivo de uma maneira correta. Este tópico visa abranger algumas boas práticas que você deve levar em consideração na hora de compilar um software.
+</p>
+
+<p>
 Não se esqueça que compilação e empacotamento não é brincadeira, é uma função honrosa e a mais especial de uma distribuição!
-Leia com atenção, pesquise e pratique muito.<br>
+Leia com atenção, pesquise e pratique muito.
+</p>
 
 <h3 id="compilacao" class="titulo">Quais parâmetros devo usar na compilação?</h3>
-<p>A primeira coisa que você precisa fazer é ler no código fonte do programa o README, INSTALL ou qualquer outro documento que exista. Qualquer programador de quintal necessita disponibilizar como fazer a instalação do seu software, afinal nínguem tem vidência. Após você ter feito a leitura podemos prosseguir, <strike>normalmente</strike> os softwares são criados com as ferramentas do GNU e existe algum tipo de script para configuração, se os mesmos não forem criados com as ferramentas GNU, deve existir algum script que faz a configuração pré-compilação...</br>
-Este script de configuração faz toda a configuração básica e verifica se todas as dependências estão supridas para o software ser compilado!<br>
+
+<p>
+A primeira coisa que você precisa fazer é ler no código fonte do programa o README, INSTALL ou qualquer outro documento que exista. Qualquer programador de quintal necessita disponibilizar como fazer a instalação do seu software, afinal nínguem tem vidência.
+</p>
+
+<p>
+Após você ter feito a leitura podemos prosseguir, <strike>normalmente</strike> os softwares são criados com as ferramentas do GNU e existe algum tipo de script para configuração, se os mesmos não forem criados com as ferramentas GNU, deve existir algum script que faz a configuração pré-compilação...
+</p>
+
+<p>
+Este script de configuração faz toda a configuração básica e verifica se todas as dependências estão supridas para o software ser compilado!
+</p>
+
+<p>
 Note que há uma diferença entre as dependências da compilação e do software em si. As vezes existem dependências para compilar o software mas após ter compilado não será mais necessário o mesmo instalado em sua máquina...<br>
-Isto é uma questão de teste os quais você "compilador/empacotador" terá que testar!</p>
+Isto é uma questão de teste os quais você "compilador/empacotador" terá que testar!
+</p>
 
-<p>Estes scripts também tem suas opções de help, o qual você pode verificar o que você pode habilitar/desabiliar na compilação! Isto fará todo efeito no software, por exemplo, se eu pedir para desabilitara interface gráfica do mplayer eu poderia passar algum parâmetro para o script dele chamado <b>configure</b>.</br>
-Assim a interface não estaria presente quando o usuário fosse instalar. No ffmpeg por exemplo para ativar o ffplay que é um módulo presente no ffmpeg que toca áudio e vídeos, se não for passado o parâmetro <b>--enable-ffplay</b> o mesmo não estará presente após instalado.</br>
-Por isso você deve ficar bem atento as opções que os softwares apresentam na compilação, afinal compilação é isso... O programador te dá as peças para você mesmo montar.</br>
+<p>
+Estes scripts também tem suas opções de help, o qual você pode verificar o que você pode habilitar/desabiliar na compilação! Isto fará todo efeito no software, por exemplo, se eu pedir para desabilitara interface gráfica do mplayer eu poderia passar algum parâmetro para o script dele chamado <b>configure</b>.
+</p>
 
-<p>Normalmente os parâmetros que usamos como uma "receita" de bolo para uma instalação mais ideal seria como o exemplo com o configure:</p>
+<p>
+Assim a interface não estaria presente quando o usuário fosse instalar. No ffmpeg por exemplo para ativar o ffplay que é um módulo presente no ffmpeg que toca áudio e vídeos, se não for passado o parâmetro <b>--enable-ffplay</b> o mesmo não estará presente após instalado.
+</p>
+
+<p>
+Por isso você deve ficar bem atento as opções que os softwares apresentam na compilação, afinal compilação é isso... O programador te dá as peças para você mesmo montar.
+</p>
+
+<p>
+Normalmente os parâmetros que usamos como uma "receita" de bolo para uma instalação mais ideal seria como o exemplo com o configure:
+</p>
 
 <div id='code'>
 ./configure \<br>
@@ -551,10 +736,19 @@ Por isso você deve ficar bem atento as opções que os softwares apresentam na 
 --docdir=/usr/share/doc
 </div>
 
-<p>Estes parâmetros básicos vão garantir que a localização do software não sujem o seu sistema:</p>
+<p>
+Estes parâmetros básicos vão garantir que a localização do software não sujem o seu sistema:
+</p>
 
 <p><b class="sub">--prefix=/usr</b><br>
-<p>Garante que toda hierarquia do software como binários serão entregues em /usr/bin, suas bibliotecas em /usr/lib e os arquivos de desenvolvimento em /usr/include. Se caso você não especifique o --prefix normalmente a hierarquia fica em /usr/local, isso não é o correto e em TODOS os casos nenhuma distribuição aceitaria o pacote neste formato.</p>
+
+<p>
+Garante que toda hierarquia do software como binários serão entregues em /usr/bin, suas bibliotecas em /usr/lib e os arquivos de desenvolvimento em /usr/include.
+</p>
+
+<p>
+Se caso você não especifique o --prefix normalmente a hierarquia fica em /usr/local, isso não é o correto e em TODOS os casos nenhuma distribuição aceitaria o pacote neste formato.
+</p>
 
 <p><b class="sub">--sysconfdir=/etc</b><br>
 <p>Esse parâmetro irá garantir que toda configuração do software será entregue em /etc.</p>
@@ -564,11 +758,23 @@ Por isso você deve ficar bem atento as opções que os softwares apresentam na 
 <p>Garante que todos os arquivos variáveis do software será entregue em /var</p>
 
 <p><b class="sub">--mandir=/usr/share/man</b><br>
-<p>Garante que todo manual do software fique em /usr/share/man, normalmente não será preciso especificar este parâmetro já que setamos o --prefix em /usr, na compilação já entendido que a hierarquia precisa ser está. Mas mal não faz também fazer a setagem manual.<br>
-Outra coisa que você precisa confirmar é se no seu sistema qual o ideal que pode variar, no mazonOS a localização para manuais seria /usr/share/man, já na distribuição Slackware /usr/man. Então fica a seu critério fazer a avaliação.</p>
+
+<p>
+Garante que todo manual do software fique em /usr/share/man, normalmente não será preciso especificar este parâmetro já que setamos o --prefix em /usr, na compilação já entendido que a hierarquia precisa ser está. Mas mal não faz também fazer a setagem manual.
+</p>
+
+<p>
+Outra coisa que você precisa confirmar é se no seu sistema qual o ideal que pode variar, no mazonOS a localização para manuais seria /usr/share/man, já na distribuição Slackware /usr/man. Então fica a seu critério fazer a avaliação.
+</p>
 
 <p><b class="sub">--docdir=/usr/share/doc</b><br>
-<p>Garante que toda a documentação sera entregue em /usr/share/doc/PROGRAMA-VERSÃO, normalmente este parâmetro é extra também já que especificamos o --prefix em /usr. Aqui também pode ter variações, na mazonOS fica em /usr/share/doc já na distribuição Slackware em /usr/doc.</p>
+<p>
+Garante que toda a documentação sera entregue em /usr/share/doc/PROGRAMA-VERSÃO, normalmente este parâmetro é extra também já que especificamos o --prefix em /usr. 
+</p>
+
+<p>
+Aqui também pode ter variações, na mazonOS fica em /usr/share/doc já na distribuição Slackware em /usr/doc.
+</p>
 
 <p>Está é uma receita de bolo para uma boa compilação... Lembre-se de sempre fazer a leitura para ver quais parâmetros extras você pode passar!.</p>
 
@@ -588,10 +794,22 @@ Nota!
 -->
 
 <h3 id="enfeites" class="titulo">Enfeites do pacote</h3>
-<p>Você faz o fakeroot por alguns motivos, entres eles o enfeite do pacote! Mas isso se o software necessitar, um software que executa em linha de comando terá poucos enfeites.<br>
-Mas o que é o enfeite do pacote?<br>
-O enfeite pode ser tudo que o usuário final vai ver ou não! É a etapa final que o pacote precisa para ficar organizado. Um exemplo clássico seria o Gimp por exemplo, que é um editor de imagens gráfico e irá precisar aparecer no menu do usuário! Normalmente o arquivo se chama PROGRAMA<b>.desktop</b>, e estará presente em usr/share/applications, você deve se certificar que este arquivo existe, se não existir você irá precisar criar toda a hierarquia de usr/share/applications e adicionar o nome do PROGRAMA.desktop e usar como base uma 
-chamada tipo:<br></p>
+<p>
+Você faz o fakeroot por alguns motivos, entres eles o enfeite do pacote! Mas isso se o software necessitar, um software que executa em linha de comando terá poucos enfeites.
+</p>
+
+<p>
+Mas o que é o enfeite do pacote?
+</p>
+
+<p>
+O enfeite pode ser tudo que o usuário final vai ver ou não! É a etapa final que o pacote precisa para ficar organizado. Um exemplo clássico seria o Gimp por exemplo, que é um editor de imagens gráfico e irá precisar aparecer no menu do usuário! Normalmente o arquivo se chama PROGRAMA<b>.desktop</b>, e estará presente em usr/share/applications, você deve se certificar que este arquivo existe.
+</p>
+
+<p>
+Se não existir você irá precisar criar toda a hierarquia de usr/share/applications e adicionar o nome do PROGRAMA.desktop e usar como base uma 
+chamada tipo:
+</p>
 
 <div id="code">
 [Desktop Entry]<br>
@@ -615,23 +833,43 @@ StartupNotify=false<br>
 <p>Um pequeno comentário vai aqui, este comentário será exibido na hora que o usuário passa o mouse em cima do ícone.</p>
 
 <b class="sub">Exec</b>
-<p>A chamada do executável, você terá que ver dentro do fakeroot qual a hierarquia do executável! no caso o binário do leafpad vai para /usr/bin/leafpad. Desta maneira ficará global para todos usuários... Você pode fazer a chamada simplesmente com 'leafpad'. Você pode passar alguns parâmetros extras também na chamada quando o usuário clicar no ícone! Consulte o manual do programa para ver as funcionalidades que podem ser passadas no programa.</p>
+<p>
+A chamada do executável, você terá que ver dentro do fakeroot qual a hierarquia do executável! no caso o binário do leafpad vai para /usr/bin/leafpad. Desta maneira ficará global para todos usuários...
+</p>
+
+<p>
+Você pode fazer a chamada simplesmente com 'leafpad'. Você pode passar alguns parâmetros extras também na chamada quando o usuário clicar no ícone! Consulte o manual do programa para ver as funcionalidades que podem ser passadas no programa.
+</p>
 
 <b class="sub">Icon</b>
-<p>O ícone é o que é exibido no menu! Normalmente vem sem caminho absoluto, porém é um erro! <b>SEMPRE</b> passe o caminho absoluto do ícone para ter a certeza que o ícone será exibido. Em alguns casos o ícone fica sem aparecer o que é uma faha do empacotador.<br>
-Verifique no seu fakeroot qual a localizaçao do ícone e lembre-se de setar no <b>.desktop</b> o caminho absoluto já com a /.</p>
+<p>
+O ícone é o que é exibido no menu! Normalmente vem sem caminho absoluto, porém é um erro! <b>SEMPRE</b> passe o caminho absoluto do ícone para ter a certeza que o ícone será exibido. Em alguns casos o ícone fica sem aparecer o que é uma faha do empacotador.
+</p>
+
+<p>
+Verifique no seu fakeroot qual a localizaçao do ícone e lembre-se de setar no <b>.desktop</b> o caminho absoluto já com a /.
+</p>
 
 
 <b class="sub">Terminal</b>
-<p>Está é uma boa funcionalidade! O programa que você está empacotando vai ser executado no terminal? Exemplo clássico é um script em Shell ou Python por exemplo que executa via modo texto, mas você quer que tenha um ícone e o programa abra e rode em um terminal...<br>
-Se está opção ser marcada como <b>true</b> você está especificando que será executado em um terminal, caso contrário utilize o <b>false</b></p>
+<p>
+Está é uma boa funcionalidade! O programa que você está empacotando vai ser executado no terminal? Exemplo clássico é um script em Shell ou Python por exemplo que executa via modo texto, mas você quer que tenha um ícone e o programa abra e rode em um terminal...
+</p>
+
+<p>
+Se está opção ser marcada como <b>true</b> você está especificando que será executado em um terminal, caso contrário utilize o <b>false</b>
+</p>
 
 <b class="sub">StartupNotify</b>
-<p>Está opção se habilitada irá exibir uma notificação de inicialização do programa. Normalmente deixamos desabilitado está opção a não ser que o software realmente precise desta opção ativada.</p>
+<p>
+Está opção se habilitada irá exibir uma notificação de inicialização do programa. Normalmente deixamos desabilitado está opção a não ser que o software realmente precise desta opção ativada.
+</p>
 
 <h3>Arrumando alguns arquivos de DOC</h3>
 
-<p>Após o enfeite acima, você irá precisar ainda do código fonte para verificar se existem arquivos em plain text que tem informações do programa! Exemplos básico:</p>
+<p>
+Após o enfeite acima, você irá precisar ainda do código fonte para verificar se existem arquivos em plain text que tem informações do programa! Exemplos básico:
+</p>
 
 <p>AUTHORS COPYING HACKING INSTALL LICENSE NEWS README</p>
 
@@ -654,14 +892,22 @@ Nota!
 
 
 <h3 id="strip" class="titulo">Strip Now</h3>
-<p>Após a compilação você necessita tirar a inclusão de símbolos nos objetos do binário, o comando que ajudará em reduzir o binário em até 60% será o comando strip! Você deve verificar se o binario já está ou não estripado, para isto utilize o comando file:</p>
+<p>
+Após a compilação você necessita tirar a inclusão de símbolos nos objetos do binário, o comando que ajudará em reduzir o binário em até 60% será o comando strip!
+</p>
+
+<p>
+Você deve verificar se o binario já está ou não estripado, para isto utilize o comando file:
+</p>
 
 <div id="code">
 # <b>file</b> usr/bin/nano<br>
 usr/bin/nano: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, not stripped
 </div>
 
-<p>Perceba que existe um campo que está como "not stripped", ou seja ele ainda não está estripado, vamos verificar o tamanho do arquivo para tirar a conclusão depois, para isto utilizamos o comando du com os parâmetros -sh:</p>
+<p>
+Perceba que existe um campo que está como "not stripped", ou seja ele ainda não está estripado, vamos verificar o tamanho do arquivo para tirar a conclusão depois, para isto utilizamos o comando du com os parâmetros -sh:
+</p>
 
 <div id="code">
 # <b>du</b> -sh usr/bin/nano<br>
@@ -691,6 +937,27 @@ usr/bin/nano: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically l
 
 <p>O binário de 168M reduziu para 5,5M! Será que faz diferença? é essencial usar o strip em binários, <b>JAMAIS</b> se esqueça pois isso faz toda diferença no tamanho do pacote.</p>
 
+
+<h3 id="diferencial" class="titulo">O Diferencial</h3>
+
+<p>
+A segurança é primordial em qualquer área! Um gerenciador de baixo nível normalmente não tem muitas camadas de segurança.
+E isto por se tratar de um utilitário que não tem muita inteligência.
+</p>
+
+<p>
+Com o banana é diferente, a segurança vem em primeiro lugar. É por isso que a cada vez adicionamos mais camadas de segurança, para o usuário saber que recebeu o determinado pacote intacto e sem alterações!
+</p>
+
+<p>
+Para isto contamos com alguns métodos.
+</p>
+
+<ul>
+    <li><b>Integridade</b>. Ao gerar um pacote por padrão é criada uma hash de 256 bits, com isto o usuário pode fazer a verificação da integridade do pacote.</li>
+    <br>
+    <li><b>Scripts</b>. Nos scripts de pré e pos instalação não será possivel executar o comando rm -rf/fr.</li>
+</ul>
 
 <hr>
 
