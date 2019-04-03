@@ -31,7 +31,7 @@
 <h2>Documentação</h2>
 <h3>Índice</h3>
 <ol id="principal">
-	<li id="categoria">Prefácio</li>
+	<li id="categoria"><b>Prefácio</b></li>
 		<ul>
 	            <li><a href="#bananapkgprojeto">O projeto BananaPKG</a></li>
 		    <li><a href="#inspirado">BananaPKG é fork de qual gerenciador?</a></li>
@@ -40,29 +40,40 @@
 		    <li><a href="#formato-pacote">Qual o formato do pacote?</a></li>
 		    <li><a href="#passar-amigos">Posso passar os pacotes que criei para amigos?</a></li>
 		</ul>
-	<li id="categoria" href='#modo-de-utilizacao'>Modo de Utilização</li>
+		
+		<br>
+		
+	<li id="categoria" href='#modo-de-utilizacao'><b>Modo de Utilização</b></li>
 		<ul>
 		    <li><a href="#criar-pacote">Como criar um pacote</a></li>
                 <ul>
                      <li><a href="#scripts">Scripts do diretório info/</a></li>
+                     <li><a href="#assinatura">Assinatura GPG/</a></li>
                 </ul>
 		     <li><a href="#instalar-atualizar-pacote">Como instalar/atualizar um pacote</a></li>
 		     <li><a href="#remover-pacote">Como remover um pacote</a></li>			
 		</ul>
-	<li id="categoria" href='#'>Desenvolvimento</li>
+		
+		<br>
+		
+	<li id="categoria" href='#'><b>Desenvolvimento</b></li>
                 <ul>
 		     <li><a href="#listdescremove">/var/lib/banana/{list,desc,remove}</a></li>
 		     <li><a href="#etcbanana">Arquivo de configuração em /etc/banana</a></li>
 		     <li><a href="#coresh">core.sh</a></li>
 		     <li><a href="#helpsh">help.sh</a></li>
                 </ul>
-	<li id="categoria" href='#compilacao'>Compilação um caminho correto</li>
+       <br>
+       
+	<li id="categoria" href='#compilacao'><b>Compilação um caminho correto</b></li>
                 <ul>
 		     <li><a href="#compilacao">Quais parâmetros devo usar na compilação?</a></li>
 		     <li><a href="#enfeites">Enfeites do pacote</a></li>
 		     <li><a href="#strip">Strip Now</a></li>
                 </ul>
-	<li id="categoria" href='#compilacao'>Segurança</li>
+       <br>
+                
+	<li id="categoria" href='#diferencial'><b>Segurança</b></li>
                 <ul>
 		     <li><a href="#diferencial">O diferencial</a></li>
                 </ul>
@@ -428,6 +439,110 @@ EOF
     <li>Análise é essencial, teste os scripts antes de empacotar.     
 </ul>
 </div>
+
+
+<h3 id="assinatura" class="titulo">Assinatura GPG</h3>
+
+<p>
+Por padrão o bananapkg assina os pacotes na criação dos mesmos como o gpg.
+Este método garante que aquele pacote foi realmente empacotado pelo <b>Fulaninho</b>.
+</p>
+
+<p>
+Garantindo assim mais segurança ao empacotador e aos usuários que venham utilizar o mesmo.
+</p>
+
+<p>
+É de extrema importância você ter sua chave GPG, nesta parte do tutorial vamos ensinar você a como você pode gerar a mesma com gpg.
+</p>
+
+<p>
+Se caso você já tenha sua chave GPG você poderá ir para o final desta receita.
+</p>
+
+<p><b class="sub">Criando a chave GPG</b><br>
+
+<p>
+Em poucas etapas você pode criar sua chave GPG! Siga todo o passo a passo, não vamos cobrir muitos detalhes sobre, pois vai além do escopo desta documentação.
+</p>
+
+<p>
+Após rodar o comando gpg --gen-key, siga todas etapas!
+Na parte aonde ele gera entropia você pode usar o cat em /dev/urandom em 2 ou mais terminais diferentes, assim garantindo uma boa entropia.
+</p>
+
+<p>
+Também é sábio você digitar um texto, mexer bastante em seu mouse. Tudo isso vai ajudar na entropia.
+</p>
+
+
+<div id="code">
+<pre>
+# Gerando sua chave
+$ gpg --gen-key
+
+# Exportando sua chave para um arquivo externo
+$ gpg --armor --output pubkey.txt --export 'name'
+</pre>
+</div>
+
+
+
+<p><b class="sub">O Problema! A Solução.</b><br>
+
+<p>
+Para criação de pacotes com o banana, você necessitará do root!
+Não gere sua chaves como root, gere como usuário comum e após este processo envie o diretório <b>.gnupg</b>.
+para o HOME do root.
+</p>
+
+<p>
+Com este processo você pode assinar os pacotes de uma forma fácil.
+</p>
+
+<p>
+O mesmo esta disponivel em sua <b>HOME</b>. Copie para a HOME do root.
+</p>
+
+<div id="code">
+<pre>
+# cp ~/.gnupg /root/
+</pre>
+</div>
+
+<p>
+Pronto! Agora você já pode assinar seus pacotes ;) Lembre-se o quanto é importante proteger sua chave privada! E também ter uma senha forte no seu usuário comum e root.
+</p>
+
+<p><b class="sub">Verificar Assinatura.</b><br>
+
+<p>
+O banana não faz a verificação das assinaturas automaticamente. Quem deverá ser encarregado deste objetivo é o próprio usuário!
+</p>
+
+<p>
+Recomendamos antes de fazer a instalação dos pacotes você fazer a verificação da assinatura. Este método vai lhe garantir uma maior segurança.
+</p>
+
+<p>
+Para fazer uma verificação, os dois arquivos <b>Pacote e Arquivo com Assinatura</b> devem estar no mesmo diretório!
+Perceba que toda informação do empacotador responsável esta sendo exibido na tela.
+</p>
+
+<div id="code">
+<pre>
+$ gpg --verify acpid-2.0.30-1.mz.sig
+gpg: assumindo dados assinados em `acpid-2.0.30-1.mz'
+gpg: Signature made Qua 03 Abr 2019 01:32:33 -03 using RSA key ID 75BF6894
+gpg: <b>Good signature</b> from "Jefferson Luiz da Rocha Carneiro
+(Esta é minha chave GPG Real. slackjeff.com.br) <root@slackjeff.com.br>"
+</pre>
+</div>
+
+<p>
+Se for impresso nas informações <b>Good signature</b> é sinal que o pacote não foi alterado.<br>
+Se caso for <b>Bad signature</b> NÃO instale o pacote, entre em contato com o empacotador. Possivelmente algo foi alterado no pacote.
+</p>
 
 <h3 id="instalar-atualizar-pacote" class="titulo">Como instalar/atualizar um pacote</h3>
 <b>banana [install/upgrade] [Nomedopacote-Versão-Build.mz]</b><br><br>
@@ -955,6 +1070,8 @@ Para isto contamos com alguns métodos.
 
 <ul>
     <li><b>Integridade</b>. Ao gerar um pacote por padrão é criada uma hash de 256 bits, com isto o usuário pode fazer a verificação da integridade do pacote.</li>
+    <br>
+    <li><b>Assinatura</b>. Por padrão o empacotador é <u>obrigado</u> a assinar seus pacotes com sua chave gpg. Isto é feito automaticamente na hora da criação do pacote.</li>
     <br>
     <li><b>Scripts</b>. Nos scripts de pré e pos instalação não será possivel executar o comando rm -rf/fr.</li>
 </ul>
