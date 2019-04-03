@@ -481,14 +481,33 @@ Também é sábio você digitar um texto, mexer bastante em seu mouse. Tudo isso
 <div id="code">
 <pre>
 # Gerando sua chave
-$ gpg --gen-key
+$ <b>gpg</b> --gen-key
 
 # Exportando sua chave para um arquivo externo
-$ gpg --armor --output pubkey.txt --export 'name'
+
+$ <b>gpg</b> --armor --output pubkey.txt --export 'name'
+
+##### Exportando sua chave privada
+# Identifique sua chave privada. Você precisa saber
+# O ID da sua chave, esta informação está no SEGUNDO campo.
+
+$ <b>gpg</b> --list-secret-keys
+
+# Exporte sua chave privada para um arquivo externo.
+
+$ <b>gpg</b> --export-secret-keys <b>MINHAID</b> > NOME-private.asc
+
+# Se um dia você estiver em uma outra máquina e necessitar
+# IMPORTAR sua chave gpg, use:
+
+$ <b>gpg</b> --import NOME-private.asc
 </pre>
 </div>
 
-
+<p>
+<b>SUA CHAVE PRIVADA NÃO DEVERÁ SER PASSADA PARA NINGUEM!</b><br>
+<b>Não se esqueça da importância da sua chave, faça backup em algum lugar seguro como um pendrive ou qualquer outra midia.</b>
+</p>
 
 <p><b class="sub">O Problema! A Solução.</b><br>
 
@@ -517,6 +536,7 @@ Pronto! Agora você já pode assinar seus pacotes ;) Lembre-se o quanto é impor
 </p>
 
 <img src='bananagpg1.gif'>
+<p align='center'><b>Criando pacote, assinando e verificando assinatura do pacote.</b><p>
 
 <p><b class="sub">Verificar Assinatura.</b><br>
 
