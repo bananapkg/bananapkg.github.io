@@ -480,6 +480,13 @@ Também é sábio você digitar um texto, mexer bastante em seu mouse. Tudo isso
 
 <div id="code">
 <pre>
+
+# mkdir /root/.gnupg
+# echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+
+Com isso evitamos alguns WARNINGS.
+Para criar agora a sua chave use:
+
 # Gerando sua chave
 $ <b>gpg</b> --gen-key
 
@@ -508,28 +515,6 @@ $ <b>gpg</b> --import NOME-private.asc
 <b>SUA CHAVE PRIVADA NÃO DEVERÁ SER PASSADA PARA NINGUEM!</b><br>
 <b>Não se esqueça da importância da sua chave, faça backup em algum lugar seguro como um pendrive ou qualquer outra midia.</b>
 </p>
-
-<p><b class="sub">O Problema! A Solução.</b><br>
-
-<p>
-Para criação de pacotes com o banana, você necessitará do root!
-Não gere sua chaves como root, gere como usuário comum e após este processo copie o diretório <b>.gnupg</b>.
-para o HOME do root.
-</p>
-
-<p>
-Com este processo você pode assinar os pacotes de uma forma fácil.
-</p>
-
-<p>
-O mesmo esta disponivel em sua <b>HOME</b>. Copie para a HOME do root.
-</p>
-
-<div id="code">
-<pre>
-# cp -r /home/USUARIO/.gnupg /root/
-</pre>
-</div>
 
 <p>
 Pronto! Agora você já pode assinar seus pacotes ;) Lembre-se o quanto é importante proteger sua chave privada! E também ter uma senha forte no seu usuário comum e root.
