@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<title>BananaPKG - Simples Gerenciador de pacotes de baixo nível</title>
+	<meta charset="utf-8">
+	<style>
+		body{font-size: 1.2em; color: #232323;font-family: courier new; margin-left: 4%; margin-right: 4%;}
+                #principalcon{margin: 1em auto;max-width: 55em}
+		hr{border: 1px dashed; color: #333; margin-top: 4%; margin-bottom: 4%;}
+		h3{margin-top: 3%; margin-bottom: 3%;}
+		img{margin-left: 19%;}
+		li{margin: 0.8%;}
+                .sub{color: #FF3C12;}
+		#code{background-color: #b8b8b8; padding: 1%; color: #232323;}
+		.titulo{color: #007e4d; background-color: #E1E1E1; padding: 0.5%;}
+                #nota
+                {
+                 background-color: #292929;
+                 color: #00FFB2;
+                 padding: 1%; 
+                 margin-top: 2%; margin-bottom: 2%; 
+                 box-shadow: 1px 10px 10px 0.2px #C6C6C6;
+                }
+                #nota li{color: white; margin: 1%;}
+                #parametros{color: #900C3F;}
+                #voltar{font-size: 1.1em; text-align: center;}
+	</style>
+</head>
+<body>
+<div id='principalcon'>
+<b>Atualização: 05/04/2019</b>
+<h2>Code-Style</h2>
+
+<hr>
+
+<p>
+<b>IDENTAÇÃO:</b> Tabulação de 4, convertido em espaços.
+</p>
+
+<h3 id="inspirado" class="titulo">Sobre este Manual para Programadores</h3>
+
+<p>
+Este manual tem a visão de ajudar a esclarecer os futuros desenvolvedores do banana, assim criando um padrão a ser seguido!
+Por favor, leia todo este manual!
+</p>
+
+
+<h3 id="inspirado" class="titulo">O que você, programador precisa saber!</h3>
+
+<p>
+O bananapkg desde o inicio segue uma conduta! Não se intitulamos um simples script/rotina e sim um programa.
+Para continuar a seguir esta conduta devemos levar em consideração que o algoritmo sempre deverá ser levado a sério e não como uma brincadeira.
+</p>
+
+<p>
+Você deve levar em consideração que fazemos a manipulação da parte mais importante do sistema, os programas.
+Se algo der errado poderá quebrar o sistema do usuário todo! Como é o caso da parte de remoção dos pacotes.
+</p>
+
+<p>
+Por isso a receita básica:
+</p>
+
+<ul>
+	<li>Fazer Todas conferências possiveis e sempre retornar status de saída.</li>
+	<li>Se criado variáveis dentro de funções deverão ser locais, vista apenas para mesma.</li>
+	<li>Nunca, jamais deixar sujeira no sistema! Por exemplo, você criou uma função que cria um arquivo temporário em /tmp. Sabendo que o diretório /tmp em muitos sistema são apagados no halt da máquina... Você deixaria o arquivo perdido lá? Não. Assim como foi criado deverá ser apagado.</li>
+	<li>Prefira o algoritmo seguro e mais lento! De nada adianta ter um algoritmo rápido se poderá falhar em algum momento. Na dúvida prefira o pouco mais lento mas que seja realmente seguro.</li>
+	<li>Se for fazer um commit de algum trecho do programa, que seje além da estética do código, algo mais rápido. Mas como assim? Não adianta ter uma estética melhor se faz a mesma coisa, e a lentidão é a mesma. Infelizmente pelo Bash ser interpretado sabemos que é dificil conseguirmos fazer um programa rápido. Mas cada vez queremos afinar mais o banana e o deixar com um algoritmo o mais rápido.</li>
+	<li>Evite ao máximo ferramentas externas que não fazem parte do <b>coreutils</b> do GNU. Em casos especificos utilizamos ferramentas externas como <b>grep, sed, awk</b>. Mas lembre-se! Sempre tem alternativas.</li>
+	<li>Sempre comente, afinal ninguem quer se perder não é? Comentários no fonte deve ser em PT-BR e impressão para usuário em US</li>
+	<li>Teste tudo que você inserir! Por exemplo, foi utilizado um rm, precisa ter a verificação se deu erro ou não. <b>NADA</b> pode continuar sem testar.</li>
+</ul>
+
+<h3 id="inspirado" class="titulo">Variáveis</h3>
+
+<p>
+O conteúdo das variáveis devem sempre estar seguros entre aspas!
+Certifique-se de não esquecer. Se for simples strings onde não existe o uso de variáveis ou algum backslash, você pode usar somente aspas simples.
+</p>
+
+<p>
+Como aspas duplas tem o poder de interpretar tudo que está dentro dela, é um pouco mais lento. Para string prefira aspas simples ''
+</p>
+
+<pre id="code">
+<b>#Errado</b>
+teste_do_pacote=$(echo 'Echo desnecessário')
+
+<b>#Correto</b>
+teste_do_pacote="$(echo 'Echo desnecessário')""
+</pre>
+
+<pre id="code">
+<b>#Errado</b>
+testando="Só uma string qualquer"
+
+<b>#Correto</b>
+testando_de_novo='Só uma string qualquer'
+</pre>
+
+
+
+<h3 id="inspirado" class="titulo">O Comando Teste</h3>
+
+<p>
+O teste que utilizamos é do padrão Bash/KSH. Por o banana ser contruido em bash não tem o motivo para usar o teste padrão Bourne Shell.<br>
+O teste [[ ]] é muito mais poderoso e aceita por exemplo expressões regulares ;)
+</p>
+
+<pre id='code'>
+#<b>ERRADO</b>
+[ -e "arquivo" ] && echo "Existe"
+
+#<b>CERTO</b>
+<b>[[</b> -e "arquivo" <b>]]</b> && echo "Existe"
+</pre>
+
+
+<h3 id="inspirado" class="titulo">Funções</h3>
+
+<p>
+As funções deverão iniciar com <b>_</b> seguido de um nome <b>BEM</b> descritivo e em UPPERCASE.
+Também deverá ser em inglês.
+Utilize o <b>function</b> na frente para chamada.
+</p>
+
+<pre id='code'>
+#<b>ERRADO</b>
+_count_chars()
+{
+	commands
+}
+
+#<b>CERTO</b>
+<b>function</b> _COUNT_CHARS_ON_PACKAGE()
+{
+	commands
+}
+</pre>
+
+<p>
+Utilize também variáveis somente locais nas funções, não podemos de maneira alguma sujar o ambiente do programa!
+Isso pode favorecer a falhas futuras.
+</p>
+
+<pre id='code'>
+#<b>ERRADO</b>
+_CLEAR_DIR_TMP()
+{
+	# Variaveis
+	v='$1'
+	b='$2'
+}
+
+#<b>CERTO</b>
+function _CLEAR_DIR_TMP()
+{
+	# Variaveis
+	<b>local</b> v='$1'
+	<b>local</b> b='$2'
+}
+</pre>
+
+<h3 id="inspirado" class="titulo">Não use o cat</h3>
+
+<p>
+Ele faz parte do coreutils do GNU, porém como na grande maioria dos casos, tentamos não depender destas ferramentas.
+</p>
+
+<p>
+Para isso fazemos a emulação... Para simular o comando cat podemos usar o loop while lendo linha a linha uma arquivo
+O loop while é builtin do próprio shell bash, deixando assim um pouco mais rápido.
+</p>
+
+<p>
+Isso em <b>ALGUNS</b> casos e bem especificos. Na maioria das vezes é um pouco mais lento, porém podemos fazer uma manipulação melhor do documento, sem depender de outras ferramentas.
+Veja ainda nesta sessão.
+</p>
+
+<pre id="code">
+$ time <b>cat</b> /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/dev/null:/bin/false
+daemon:x:6:6:Daemon User:/dev/null:/bin/false
+messagebus:x:18:18:D-Bus Message Daemon User:/var/run/dbus:/bin/false
+......
+
+real	0m0.002s
+user	0m0.000s
+sys	0m0.002s
+
+
+$ time <b>while IFS= read line; do echo "$line"; done</b> < "/etc/passwd"
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/dev/null:/bin/false
+daemon:x:6:6:Daemon User:/dev/null:/bin/false
+messagebus:x:18:18:D-Bus Message Daemon User:/var/run/dbus:/bin/false
+.....
+
+real	0m0.002s
+user	0m0.001s
+sys	0m0.000s
+</pre>
+
+
+<p>
+Normalmente se usaria a ferramenta grep para fazer uma pesquisa em um arquivo. É uma boa ferramenta mas em alguns casos podemos usar o loop while com o teste para fazer está brincadeira.
+</p>
+
+Como dito, não será tão rápido... Mas programação em Shell é isso! Tentar usar o máximo dos recursos builtin.
+
+<pre id="code">
+time <b>grep</b> '^slackjeff' /etc/passwd
+slackjeff:x:1001:1002::/home/slackjeff:/bin/bash
+
+real	0m0.006s
+user	0m0.004s
+sys	0m0.002s
+
+time <b>while</b> IFS= read line; do
+	[[ "$line" =~ ^slackjeff ]] && echo "$line"
+done < "/etc/passwd"
+slackjeff:x:1001:1002::/home/slackjeff:/bin/bash
+
+real	0m0.002s
+user	0m0.002s
+sys	0m0.000s
+</pre>
+
+<pre id="code">
+<b>#ERRADO</b>
+time echo "$1" | grep -qE '[[:space:]]+' && echo "tem espaço"
+<b>tem espaço</b>
+
+real	0m0.007s
+user	0m0.006s
+sys	0m0.002s
+
+<b>#CORRETO</b>
+time while read line; do
+	[[ "$line" =~ [[:space:]]+ ]] && echo "Tem espaços."
+done <<< "$1"
+<b>Tem espaços.</b>
+
+real	0m0.000s
+user	0m0.000s
+sys	0m0.000s
+</pre>
+
+<p>Isso é um exemplo bem básico, claro que alguns casos não tem como fugir... Mas evite.</p>
+
+
+<h3 id="inspirado" class="titulo">Sed desnecessário</h3>
+
+<p>
+Em muitos códigos vemos o uso do sed desnecessário, sendo usado em coisas que poderiamos usar a expansão de variáveis.
+</p>
+
+<p>
+Expansão de variáveis é builtin do próprio Shell e possui recursos bem avançados! Por exemplo supondo que precisamos converter toda string em maiusculo.
+</p>
+
+<pre id="code">
+<b># ERRADO</b>
+up="oi tudo bem"
+up="$(echo "$up" | sed 's/./\U&/g')"
+OI TUDO BEM
+
+
+<b>#CERTO</b>
+up="oi tudo bem"
+up=${up^^}
+echo $up
+OI TUDO BEM
+</pre>
+
+<hr>
+
+<a href='./index.html' id='voltar'>VOLTAR</a>
+
+</div>
+</body>
+</html>
