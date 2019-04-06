@@ -28,8 +28,17 @@
 </head>
 <body>
 <div id='principalcon'>
-<b>Atualização: 02/04/2019</b>
+<b>Atualização: 06/04/2019</b>
+
 <h2>Documentação</h2>
+
+<p>
+Está documentação tem como intuito ajudar os usuários do banana!
+Se você possui alguma sugestão para incrementar nesta documentação entre em contato.
+</p>
+
+<hr>
+
 <h3>Índice</h3>
 <ol id="principal">
 	<li id="categoria"><b>Prefácio</b></li>
@@ -52,7 +61,8 @@
                      <li><a href="#assinatura">Assinatura GPG/</a></li>
                 </ul>
 		     <li><a href="#instalar-atualizar-pacote">Como instalar/atualizar um pacote</a></li>
-		     <li><a href="#remover-pacote">Como remover um pacote</a></li>			
+		     <li><a href="#remover-pacote">Como remover um pacote</a></li>
+		     <li><a href="#procurar-pacote">Como procurar um pacote</a></li>
 		</ul>
 		
 		<br>
@@ -179,51 +189,57 @@ MODO DE UTILIZAÇÃO
 
 <pre>Parâmetos Resumidos:
 
--V, version
+<b>-V</b>, <b>version</b>
 	Exibe a versão do banana
 
--h, help
+<b>-h</b>, <b>help</b>
 	Exibe ajuda e sai
 
--c, create
+<b>-c</b>, <b>create</b>
 	Cria um pacote
 
--r, remove
+<b>-r</b>, <b>remove</b>
 	Remove um pacote
 
--y
+<b>-y</b>
 	Está opção é aliada ao parâmetro -r, remove. Ela serve para auto confirmar a remoção do pacote	
 	você pode declarar em /etc/banana/banana.conf a variável AUTO_YES para auto remover,
-	sem ter que passar este parâmetro. Você pode utilizar -y antes ou depois do argumento (pacote).<br>
+	sem ter que passar este parâmetro. Você pode utilizar -y antes ou depois do argumento (pacote).
 	Exemplo:
 	banana remove -y leafpad OU banana remove leafpad -y
 
--i, install
+<b>-i</b>, <b>install</b>
 	Instala um pacote
 
--u, upgrade
+<b>-u</b>, <b>upgrade</b>
 	Atualiza um pacote
 
-update
+<b>update</b>
     Opção para Atualizar o Bananapkg via Internet.
 
--s, search
-	Procura um pacote no sistema localmente, está opção é válida somente para pacotes que foram <br>criados
-	e instalados com o banana
+<b>-s</b>, <b>search</b>
+	Procura um pacote no sistema localmente, está opção é válida somente para pacotes que foram
+	criados e instalados com o banana.
 
--ol, --one-line
-	Está opção é aliada ao parâmetro -s, search. Ativando está opção a saída na tela fica em<br>somente em
-	uma linha <b>programa-versão-build</b>.
+<b>-ol</b>, <b>one-line</b>
+	Está opção é aliada ao parâmetro -s, search. Ativando está opção a saída na tela fica em
+	somente em uma linha <b>programa-versão-build</b>.
 
--v, --verbose
+<b>-v</b>, <b>verbose</b>
 	Modo verboso, em algumas partes do programa.
 
 <b>Para maiores informações sobre cada parâmetro leia abaixo.</b>
 </pre>
 
 
+<!--
+#####################################
+CRIAR UM PACOTE
+#####################################
+-->
+
 <h3 id="criar-pacote" class="titulo">Como criar um pacote</h3>
-<b>banana [create] [nome_do_pacote-versão-build.mz]</b><br><br>
+<b>USO:</b> banana [create] [nome_do_pacote-versão-build.mz<br><br>
 
 <div id="code">
 <b>-c</b>, <b>create</b> <b id="parametros">Criação de pacote(s)</b><br>
@@ -264,8 +280,6 @@ Assim fizemos os nossos enfeites que vamos abordar mais adiante.
 Para um exemplo, supondo que rodei toda a base ./configure && make e ao invés de por make install somente botaria em <b>make install DESTDIR=/Um/Diretorio</b>
 </p>
 
-<hr>
-
 <p>
 Voltando... Você irá necessitar seguir um passo a passo para ter êxito. O primeiro passo é criar um diretório chamado <b>info/</b> e um arquivo dentro do diretório chamado <b>desc</b>.
 </p>
@@ -275,8 +289,22 @@ Esse arquivo <b>desc</b> é de muita importância para o pacote. É atráves del
 </p>
 
 <p>
-Você pode criar manualmente ou automaticamente com a opção <b>-g</b>, <b>generate</b>. Está opção irá criar o diretório info/ e o arquivo desc pronto para edição.</p>
+Você pode criar manualmente ou automaticamente com a opção <b>-g</b>, <b>generate</b>. Está opção irá criar o diretório info/ e o arquivo desc pronto para edição.
 </p>
+
+<p>
+Você poderá passar no mesmo parâmetro do <b>-g</b>, <b>generate</b> o nome-versão-build do pacote! Assim fica mais fácil para o preencimento do resto das informações posteriormente.
+Lembre-se de sempre seguir o padrão: <b>firefox_quantum-55.0.1_2-1</b>
+</p>
+
+<h2>Exemplo</h2>
+<div id="code">
+banana -g firefox_quantum-55.0.1_2-1<br>
+<br>
+banana generate qt5-5.2-1<br>
+<br>
+banana -g sublime_text-3.9.2-1<br>
+</div>
 
 
 <div id="nota">
@@ -296,6 +324,7 @@ Você pode criar manualmente ou automaticamente com a opção <b>-g</b>, <b>gene
 O arquivo desc tem um série de variáveis que precisam ser editadas, sendo que todas <b>menos</b> a array/lista <b>dep</b> precisa ser preenchida, ás variáveis são:
 </p>
 
+<h2>Exemplo</h2>
 <div id="code">
 # Nome do mantenedor do pacote<br/>
 <b>maintainer</b>=''<br/>
@@ -308,6 +337,9 @@ O arquivo desc tem um série de variáveis que precisam ser editadas, sendo que 
 <br/>
 # Versão de construção do pacote (build)<br/>
 <b>build</b>=''<br/>
+<br/>
+# Licença<br>
+<b>license</b>=''<br/>
 <br/>
 # SMALL Description of Software, NO Trespassing |<br/>
 #=============RULER=====================================================|<br/>
@@ -346,6 +378,23 @@ Este campo é o de construção númerico! Cada vez que você mexer e gerar um n
 Ele é conferido na hora da atualização do pacote juntamente com a versão. Então é um campo muito importante também!<br>
 Lembre-se de usar somente números inteiros como (1, 2, 3, 4) etc... e não números quebrados como (0.1, 0.2, 0.3). Números quebrados não serão aceitos.</p>
 
+<p><b class='sub'>license</b><br>
+Neste campo você deve preencher com a licença do software. <b>DIFICILMENTE</b> terá um software sem licença. Pesquise antes de anexar a este campo... É muito importante.
+</p>
+<p>
+Mas como devo anexar a licença? Use sempre abreviações, Por exemplo:
+<pre>
+MIT               = <b>MIT</b>
+GNU GPL Versão 2  = <b>GPL2</b>
+GNU GPL Versão 3  = <b>GPL3</b>
+GNU GPL Versão 2+ = <b>GPL2+</b>
+</pre>
+
+Siga sempre está lógica.
+
+</p>
+
+
 <p><b class='sub'>desc</b><br>
 Neste campo você precisa ter um pouco de mais cuidado, ele é o campo de descrição do programa. Você necessita seguir a régua que tem em cima do campo e não deverá ultrapassar o pipe '|', caso sua descrição seja muito longa vá fazendo a quebra de linha antes do pipe '|'.
 Exemplo:<br></p>
@@ -380,6 +429,8 @@ Após você ter preenchido todo o arquivo <b>desc</b> você talvez necessite faz
 <p><b class="sub">pre.sh</b><br>
 <p>Este script é manipulado pelo <b>banana install</b> e é executado na pré instalação do pacote, ou seja antes do pacote ser instalado. Toda rotina que você precisa antes do software estar instalado você poderá adicionar neste script! Como um exemplo vamos criar um usuário e grupo:</p>
 
+
+<h2>Exemplo</h2>
 <div id="code">
 cat > "pre.sh" << 'EOF'<br>
 # Adicionando grupo ao rsyncd<br>
@@ -399,6 +450,7 @@ Este script também é manipulado pelo utilitário <b>banana install</b> e é ex
 Supondo que eu precisasse na pós-instalação do pacote criar um link simbólico para o firefox em /usr/bin, devemos criar um script <b>pre.sh</b> e adicionar informações lá dentro! Lembrando que deve ser dentro do diretório <b>info/</b>. Uma rotina clássica:
 </p>
 
+<h2>Exemplo</h2>
 <div id="code">
 cat > "pos.sh" << 'EOF'
 <br>
@@ -420,6 +472,7 @@ Você precisa reverter tudo neste script. Afinal não queremos deixar sujeira na
 Vamos a um exemplo clássico, adicionamos logo acima no script pre.sh e pos.sh a criação de Adicionar o grupo rsyncd e o usuário rsyncd. No script pos.sh criamos o link simbólico do firefox, então precisamos reverter isso para removê-los.
 </p>
 
+<h2>Exemplo</h2>
 <div id="code">
 cat > "rm.sh" << 'EOF'<br>
 # Removendo usuário rsyncd, como o grupo rsyncd foi criado especialmente para<br>
@@ -478,6 +531,7 @@ Também é sábio você digitar um texto, mexer bastante em seu mouse. Tudo isso
 </p>
 
 
+<h2>Exemplo</h2>
 <div id="code">
 <pre>
 
@@ -538,6 +592,7 @@ Para fazer uma verificação, os dois arquivos <b>Pacote e Arquivo com Assinatur
 Perceba que toda informação do empacotador responsável esta sendo exibido na tela.
 </p>
 
+<h2>Exemplo</h2>
 <div id="code">
 <pre>
 $ gpg --verify acpid-2.0.30-1.mz.sig
@@ -554,7 +609,7 @@ Se caso for <b>Bad signature</b> NÃO instale o pacote, entre em contato com o e
 </p>
 
 <h3 id="instalar-atualizar-pacote" class="titulo">Como instalar/atualizar um pacote</h3>
-<b>banana [install/upgrade] [Nomedopacote-Versão-Build.mz]</b><br><br>
+<b>USO:</b> banana [install/upgrade] [Nomedopacote-Versão-Build.mz]<br><br>
 
 <div id="code">
 <b>-i</b>, <b>install</b> <b id="parametros">Instalação de pacote(s)</b><br>
@@ -575,6 +630,7 @@ Se a versão for uma versão superior ele remove toda a hierarquia da versão an
 Se caso a Versão ou Build que você deseja "atualizar" for uma versão inferior ele não faz nada. É importante saber que se o pacote <b>não estiver instalado</b> o programa vai alertar e não vai instalar.<br/>Supondo que queira atualizar a versão do leafpad da 1.0 para versão 2.0:</p>
 </p>
 
+<h2>Exemplo</h2>
 <div id="code">
 # banana upgrade leafpad-2.0-1.mz<br>
 <br>
@@ -595,12 +651,12 @@ Nota!<br>
 </div>
 
 <h3 id="remover-pacote" class="titulo">Como remover um pacote</h3>
-<b>banana [remove] [nome_do_pacote] ou [nome_do_pacote-versão]</b><br><br>
+<b>USO:</b> banana [remove] [nome_do_pacote] ou [nome_do_pacote-versão]<br><br>
 
 <div id="code">
 <b>-r</b>, <b>remove</b> <b id="parametros">Remove pacote(s)</b><br>
 </div>
-
+<br>
 <b class="sub">-r, remove</b><br>
 <p>O parâmetro -r ou remove serve para remover os pacotes, supondo que queira remover o pacote leafpad</p>
 
@@ -616,8 +672,9 @@ Se você ter mais de um pacote com o mesmo nome no sistema mas com versões dife
 Exemplo clássico, supondo que tenho o leafpad com 2 versões diferentes no sistema a versão 1.0 e 2.0:</p>
 </p>
 
+<h2>Exemplo</h2>
 <div id="code">
-# banana remove leafpad<br>
+# banana <u>remove</u> leafpad<br>
 [FOUND] leafpad-1.0<br>
 [FOUND] leafpad-2.0<br>
 </div>
@@ -626,19 +683,21 @@ Exemplo clássico, supondo que tenho o leafpad com 2 versões diferentes no sist
 Então para fazer remoção neste caso eu precisarei passar o <b>nome</b> do pacote traço <b>versão</b>, ficando <b>nomepacote-versão</b>. Vamos supor que queira remover a versão do leafpad 2.0:
 </p>
 
+<h2>Exemplo</h2>
 <div id="code">
-# banana remove leafpad-2.0<br>
+# banana <u>remove</u> leafpad-2.0<br>
 </div>
 
 <p><b class="sub">O parâmetro -y</b><br><br>
 Para auto-confirmar sua escolha e não precisar passar o (y|Y|ENTER) para confirmar a remoção você pode passar o parâmetro -y, não importando sua posição, exemplo:</p>
 
+<h2>Exemplo</h2>
 <div id="code">
-# <b>banana remove -y</b> leafpad<br>
+# banana <u>remove</u> <b>-y</b> leafpad<br>
 <br>
 A posição do parâmetro -y pode ser em qualquer lugar!<br>
 <br>
-# <b>banana remove</b> leafpad <b>-y</b><br>
+# banana <u>remove</u> leafpad <b>-y</b><br>
 </div>
 
 <p>Se você sabe exatamente o que está fazendo, você pode sempre auto afirmar para remover o pacote. Existe uma variável no arquivo de configuração 
@@ -654,8 +713,8 @@ em /etc/banana/banana.conf chamada AUTO_YES, basta ligar com a opção <b>1</b>.
 </div>
 
 
-<h3 id="remover-pacote" class="titulo">Como Procurar um pacote</h3>
-<b>banana [search] [nome_do_pacote] ou [nome_do_pacote-versão]</b><br><br>
+<h3 id="procurar-pacote" class="titulo">Como Procurar um pacote</h3>
+<b>USO:</b> banana [search] [nome_do_pacote] ou [nome_do_pacote-versão]<br><br>
 
 <div id="code">
 <b>-s</b>, <b>search</b> <b id="parametros">Procura pacote(s) no sistema</b><br>
@@ -672,7 +731,7 @@ Se você tem conhecimento de expressão regular REGEX, você pode usar na pesqui
 finalidade, por padrão é desabilitado.
 </p>
 
-<b>Exemplo:</b>
+<h2>Exemplo</h2>
 
 <div id=code>
 <p>Supondo que eu tenha somente uma instalação do nano no sistema, posso fazer uma pesquisa normal.<br><br>
@@ -698,22 +757,32 @@ que serão listados todos pacotes que iniciam com flat.<br><br>
 
 <br>
 
-<b class="sub">O parâmetro -ol, --one-line</b><br><br>
+<b class="sub">O parâmetro -ol, one-line</b><br>
 <p>Este parâmetro faz ao inverso da impressão da pesquisa normal, se você precisa de algo mais enxuto está é a opção correta para
 você.</p>
 
+<h2>Exemplo</h2>
 <div id='code'>
-<b>banana search nano gedit --one-line</b><br>
+<b>banana search nano gedit <u>one-line</u></b><br>
 [FOUND] nano-3.2-1<br>
 [FOUND] gedit-3.22.1-1<br>
 <br>
+
+ou<br><br>
+
+<b>banana search <u>one-line</u> nano gedit </b><br>
+[FOUND] nano-3.2-1<br>
+[FOUND] gedit-3.22.1-1<br>
+<br>
+
 ou<br>
+
 <br>
-<b>banana search nano gedit -ol</b><br>
+<b>banana search nano gedit <u>-ol</u></b><br>
 [FOUND] nano-3.2-1<br>
 [FOUND] gedit-3.22.1-1<br>
 <br>
-<b>banana search -ol nano gedit </b><br>
+<b>banana search <u>-ol</u> nano gedit </b><br>
 [FOUND] nano-3.2-1<br>
 [FOUND] gedit-3.22.1-1<br>
 
@@ -851,13 +920,17 @@ Por isso você deve ficar bem atento as opções que os softwares apresentam na 
 Normalmente os parâmetros que usamos como uma "receita" de bolo para uma instalação mais ideal seria como o exemplo com o configure:
 </p>
 
+<h2>Exemplo</h2>
 <div id='code'>
-./configure \<br>
---prefix=/usr \<br>
---sysconfdir=/etc \<br>
---localstatedir=/var \<br>
---mandir=/usr/share/man \<br>
---docdir=/usr/share/doc
+<pre>
+./configure                   \
+    --prefix=/usr             \
+    --sysconfdir=/etc         \
+    --localstatedir=/var      \
+    --libdir=/usr/lib         \
+    --mandir=/usr/share/man   \
+    --docdir=/usr/share/doc
+</pre>
 </div>
 
 <p>
@@ -880,6 +953,9 @@ Se caso você não especifique o --prefix normalmente a hierarquia fica em /usr/
 
 <p><b class="sub">--localstatedir=/var</b><br>
 <p>Garante que todos os arquivos variáveis do software será entregue em /var</p>
+
+<p><b class="sub">--libdir=/usr/lib</b><br>
+<p>Garante que todas bibliotecas do programa irão para /usr/lib.</p>
 
 <p><b class="sub">--mandir=/usr/share/man</b><br>
 
@@ -935,6 +1011,7 @@ Se não existir você irá precisar criar toda a hierarquia de usr/share/applica
 chamada tipo:
 </p>
 
+<h2>Exemplo</h2>
 <div id="code">
 [Desktop Entry]<br>
 Version=1.0<br>
@@ -999,6 +1076,7 @@ Após o enfeite acima, você irá precisar ainda do código fonte para verificar
 
 <p>Se existir arquivos que não necessariamente precisam ser os nomes acima, você precisa enviar estes arquivos para o seu fakeroot! Exemplo:</p>
 
+<h2>Exemplo</h2>
 <div id="code">
 cp -a \<br>
   AUTHORS COPYING HACKING INSTALL LICENSE NEWS README \<br>
@@ -1024,6 +1102,7 @@ Após a compilação você necessita tirar a inclusão de símbolos nos objetos 
 Você deve verificar se o binario já está ou não estripado, para isto utilize o comando file:
 </p>
 
+<h2>Exemplo</h2>
 <div id="code">
 # <b>file</b> usr/bin/nano<br>
 usr/bin/nano: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, not stripped
@@ -1033,6 +1112,7 @@ usr/bin/nano: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically l
 Perceba que existe um campo que está como "not stripped", ou seja ele ainda não está estripado, vamos verificar o tamanho do arquivo para tirar a conclusão depois, para isto utilizamos o comando du com os parâmetros -sh:
 </p>
 
+<h2>Exemplo</h2>
 <div id="code">
 # <b>du</b> -sh usr/bin/nano<br>
 264K	usr/bin/nano
@@ -1040,6 +1120,7 @@ Perceba que existe um campo que está como "not stripped", ou seja ele ainda nã
 
 <p>O binário está com o tamanho 264K, e ainda não está estripado, então vamos estripar para reduzir ainda mais o tamanho, para isto utilizamos o comando strip com o parâmetro -s e seguida vamos usar o du -sh para ver o tamanho novamente:</p>
 
+<h2>Exemplo</h2>
 <div id="code">
 # <b>strip</b> -s usr/bin/nano<br>
 <br>
@@ -1049,6 +1130,7 @@ Perceba que existe um campo que está como "not stripped", ou seja ele ainda nã
 
 <p>Perceba que não reduziu muito o tamanho, mas em software maiores a diferença é incrivel! Olha só com um programa como do filezilla:</p>
 
+<h2>Exemplo</h2>
 <div id="code">
 # <b>du</b> -sh usr/bin/filezilla<br>
 168M	usr/bin/filezilla<br>
@@ -1061,6 +1143,7 @@ Perceba que existe um campo que está como "not stripped", ou seja ele ainda nã
 
 <p>O binário de 168M reduziu para 5,5M! Será que faz diferença? é essencial usar o strip em binários, <b>JAMAIS</b> se esqueça pois isso faz toda diferença no tamanho do pacote.</p>
 
+<hr>
 
 <h3 id="diferencial" class="titulo">O Diferencial</h3>
 
