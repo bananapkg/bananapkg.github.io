@@ -228,6 +228,11 @@ MODO DE UTILIZAÇÃO
 <b>-v</b>, <b>verbose</b>
 	Modo verboso, em algumas partes do programa.
 
+<b>-pl</b>, <b>print</b>
+    Imprimi lista do pacote instalado localmente.
+    Está lista contém toda a hierarquia do pacote, aonde foram instalados.
+    Puxado de /var/lib/banana/
+
 <b>Para maiores informações sobre cada parâmetro leia abaixo.</b>
 </pre>
 
@@ -530,7 +535,6 @@ Na parte aonde ele gera entropia você pode usar o cat em /dev/urandom em 2 ou m
 Também é sábio você digitar um texto, mexer bastante em seu mouse. Tudo isso vai ajudar na entropia.
 </p>
 
-
 <h2>Exemplo</h2>
 <div id="code">
 <pre>
@@ -562,6 +566,40 @@ $ <b>gpg</b> --export-secret-keys <b>MINHAID</b> > NOME-private.asc
 # IMPORTAR sua chave gpg, use:
 
 $ <b>gpg</b> --import NOME-private.asc
+</pre>
+</div>
+
+
+<h3 id="assinatura" class="titulo">Aviso de chave não confiável</h3>
+
+<p>
+Caso exiba um erro na criação do pacote que a chave não é confiável você terá que ralizar os procedimentos abaixos:
+</p>
+
+<div id="code">
+<pre>
+# Peça para editar sua chave.
+gpg --edit-key "seu_email@dominio.com"
+
+# Irá abrir o console onde você deverá entrar com os comandos:
+<b>trust</b>
+
+ 1 = I don't know or won't say
+ 2 = I do NOT trust
+ 3 = I trust marginally
+ 4 = I trust fully
+ <b>5 = I trust ultimately</b>
+ m = back to the main menu
+
+# Selecione a opção 5, você dira que tem total confiança na chave.
+<b>5</b>
+
+# Pressione y para confirmar
+<b>y</b>
+
+# E salve as alterações... logo após pressione 'q' para sair.
+<b>save</b>
+<b>q</b> (para sair do gpg)
 </pre>
 </div>
 
