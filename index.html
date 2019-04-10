@@ -24,7 +24,10 @@
   			display: block;
  			margin-left: auto;
   			margin-right: auto;
-		}      
+		}
+        .pt1{background-color: #ffa22f;box-shadow: 2px 2px 1px 3px #00fff0; padding: 3%}
+        .pt2{background-color: #16ffb7;box-shadow: 2px 2px 1px 3px #ffba00; padding: 3%; margin-top: 5%;}
+        .pt3{background-color: #00fcff;box-shadow: 2px 2px 1px 3px #a200ff;; padding: 3%; margin-top: 5%;}
 	</style>
 </head>
 <body>
@@ -43,15 +46,19 @@
 <a href="https://raw.githubusercontent.com/slackjeff/bananapkg/master/versions.txt" target='_blank'>Versões</a><br>
 <a href="doc-ptbr.html">Documentação em PT-BR</a><br>
 <a href="code-style.html">Code-Style</a><br>
-<a href="http://mazonos.com/packages/" target='_blank'>Pacotes já criados com o Banana</a><br>
-	
 <hr>
 
+<div class='pt1'>
+
 <h2>O que é?</h2>
-<p>BananaPKG é um gerenciador de pacotes de baixo nível escrito em Shell bash que é executado via CLI, com ela é possível <b>Criar</b>, <b>Instalar</b>, <b>Remover</b>, <b>Atualizar</b> e <b>Procurar</b> pacotes no sistema.<br>
+<p>BananaPKG é um gerenciador de pacotes de baixo nível escrito em Shell bash que é executado via CLI. Com ela é possível <b>Criar</b>, <b>Instalar</b>, <b>Remover</b>, <b>Atualizar</b> e <b>Procurar</b> pacotes no sistema.<br>
 Foi criado especialmente para rodar na distribuição Brasileira from scratch <a href='http://mazonos.com' target='_blank'>mazonOS</a>, porém é possível executar em qualquer distribuição Linux, desde que as dependências sejam supridas.<br>
+Com isto você tem um gerenciador de baixo nível universal, aonde você pode criar o seu pacote no Arch Linux por exemplo e executar também 
 O seu formato de pacote é .mz, um simples tarball comprimido com a ferramenta xz. Para mais detalhes consulte a documentação.</p>
 
+</div>
+
+<div class='pt2'>
 <h2>KISS + UNIX WAY</h2>
 <p>O banana segue a filosia KISS e UNIX WAY, o programa é extremamente direto e simples, faz somente o que foi criado para fazer! <b>gerenciar pacotes</b>. Nada menos nada mais, a complexidade é descartada por natureza.</p>
 
@@ -65,19 +72,18 @@ Se atender os requisitos que estão abaixo o banana roda em qualquer distribuiç
 	<li>Arch Linux</li>
 </ul>
 
+</div>
+
+<div class='pt3'>
 <h2>Seguro</h2>
 <p>A segurança é um bem que o banana não deixa de lado, muito bem testado e verificado cortando as principais artimanhas que os hackerzinhos de quintal usam.</p>
 
-<h2>Dependência</h2>
-<ul>
-	<li>Bash >= 4.4.18</li>
-	<li>GNU Sed >= 4.2.2</li>
-	<li>GNU Tar >= 1.30</li>
-	<li>xz >= 5.2.2</li>
-	<li>GPG >= 1.4.23</li>
-</ul>
 
 <h2>Veja</h2>
+<p>Veja os pacotes que já foram criados com o banana</p>
+<a href="http://mazonos.com/packages/" target='_blank'>Pacotes já criados com o Banana</a><br>
+
+</div>
 
 
 </div>
