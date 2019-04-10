@@ -28,7 +28,7 @@
 </head>
 <body>
 <div id='principalcon'>
-<b>Atualização: 06/04/2019</b>
+<b>Atualização: 10/04/2019</b>
 
 <h2>Documentação</h2>
 
@@ -866,19 +866,25 @@ Este diretório é especial pois contém todo o formulário e identidade do(s) p
 <p><b class="sub">/var/lib/banana/remove</b><br>
 Este diretório é usado diretamente pelo parâmetro <b>-r</b>, <b>remove</b> <b></b>, ele armazena scripts de instruções extras para remoção que o empacotador inseriu. Quando o parâmetro remove é invocado e se tudo ocorreu certo, antes de começar realmente a remoção ele chama o Script de remoção deste diretório, e depois consulta o /var/log/list para começar a remoção realmente. 
 
+
+<h3 id="coresh" class="titulo">core.sh</h3>
+<p>É a biblioteca de funções aonde todo o funcionamento principal das ferramentas estão! Até a versão 1.5 estas ferramentas eram a parte e se chamavam: burnpkg para remover pacotes, createpkg para criar pacotes e plantpkg para instalar pacotes.<br>
+No trabalho que foi feito na nova versão todo programa foi reformulado e exportado tudo para estão biblioteca que fica localizada em /usr/libexec/banana/.</p>
+
+<h3 id="helpsh" class="titulo">help.sh</h3>
+O módulo help.sh agrupa os módulos de documentação interna do banana. Foi criado a partir da versão 2.1.2, ela fazia parte do core.sh mas por uma questão de velocidade foi melhor exportar externamente os módulos e tornar um só para está finalidade.
+
+<hr>
+
+
 <h3 id="etcbanana" class="titulo">Arquivo de configuração em /etc/banana</h3>
 <p>Arquivos de configurações estão localizados em /etc/banana/, é neste diretório que você pode encontrar o arquivo de 
 configuração banana.conf.
-Existem 2 variáveis para você preencher e mudar o estado de como o programa é executado, são elas:</p>
+Existem variáveis para você preencher e mudar o estado de como o programa é executado, são elas:</p>
 
 <b class="sub">AUTO_YES</b><br>
 <p>Está chave é a alma gêmea do parâmetro -r, remove. Quando você vai remover programa(s) ele pede confirmação do mesmo. Para
 não ter que ficar confirmando ou passando o parâmetro -y para auto confirmar é só alterar o estado desta chave.</p>
-
-<div id='code'>
-	<b>0</b> Para desligado [Padrão]<br>
-	<b>1</b> Para ligado<br>
-</div>
 
 <p>Com isto o programa vai fazer a tomada de decisão certa e auto confirma a remoção do(s) programa(s).</p>
 
@@ -895,15 +901,18 @@ seu nome e email neste campo, exemplo:</p>
 <p>Feito isto sempre quando você for empacotar o campo será preenchido.</p>
 
 
-<h3 id="coresh" class="titulo">core.sh</h3>
-<p>É a biblioteca de funções aonde todo o funcionamento principal das ferramentas estão! Até a versão 1.5 estas ferramentas eram a parte e se chamavam: burnpkg para remover pacotes, createpkg para criar pacotes e plantpkg para instalar pacotes.<br>
-No trabalho que foi feito na nova versão todo programa foi reformulado e exportado tudo para estão biblioteca que fica localizada em /usr/libexec/banana/.</p>
+<b class="sub">GPG_SIGN</b><br>
+<p>
+Está chave serve para ligar/desligar a assinatura gpg na parte da criação do pacote.<br>
+Utilize 0 = Para desligar e 1 = Para ligar.
+</p>
 
-<h3 id="helpsh" class="titulo">help.sh</h3>
-O módulo help.sh agrupa os módulos de documentação interna do banana. Foi criado a partir da versão 2.1.2, ela fazia parte do core.sh mas por uma questão de velocidade foi melhor exportar externamente os módulos e tornar um só para está finalidade.
+<p>
+Por padrão está chave está ligada.
+</p>
+
 
 <hr>
-
 
 <!--
 #####################################
